@@ -3,8 +3,8 @@ import { io } from 'socket.io-client'
 import styles from "../../styles/arrows.module.css"
 export default function Room({ room_id }) {
     useEffect(() => {
-        //const socket = io("https://snakeish-backend.herokuapp.com/rooms");
-        const socket = io("http://localhost:8080/rooms");
+        const socket = io("https://snakeish-backend.herokuapp.com/rooms");
+        //const socket = io("http://localhost:8080/rooms");
         socket.on("connect", () => {
             socket.removeAllListeners()
             socket.emit('join-room', room_id);
