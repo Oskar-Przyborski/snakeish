@@ -1,10 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { io } from 'socket.io-client'
+import { useDisconnectSocketOnLeave } from "../../components/disconnectSocketOnLeave";
 import styles from "../../styles/arrows.module.css"
 export default function Room({ room_id }) {
+    let [socket, setSocket] = useState(null);
+    let [playerScore, setPlayerScore] = useState(0);
+    let [otherPlayers, setOtherPlayers] = useState([]);
+    useDisconnectSocketOnLeave(socket, true);
+
     useEffect(() => {
-        const socket = io("https://snakeish-backend.herokuapp.com/rooms");
-        //const socket = io("http://localhost:8080/rooms");
+        //setSocket(io("https://snakeish-backend.herokuapp.com/rooms"));
+        setSocket(io("http://localhost:8080/rooms"));
+    }, [])
+    useEffect(() => {
+        if (!socket) return;
+
+        socket.removeAllListeners();
         socket.on("connect", () => {
             socket.removeAllListeners()
             socket.emit('join-room', room_id);
@@ -59,22 +70,19 @@ export default function Room({ room_id }) {
             function DrawApple() {
                 FillCell(apple.x, apple.y, "red");
             }
-
-            function UpdateScore() {
-                document.getElementById("score").innerHTML = "Score: " + score;
-            }
             socket.on("game-update", (data) => {
                 snake = data.snake;
                 otherPlayers = data.otherPlayers;
+                setOtherPlayers(otherPlayers);
                 apple = data.apple;
                 score = data.score;
+                setPlayerScore(score);
                 direction = data.direction;
                 ClearCanvas()
                 DrawGridOutline();
                 DrawOtherSnakes();
                 DrawSnake();
                 DrawApple();
-                UpdateScore();
             })
 
             function SendTargetDirection(targetDirection) {
@@ -108,17 +116,48 @@ export default function Room({ room_id }) {
                 document.getElementById("move-right").style.display = "block";
                 document.getElementById("move-right").addEventListener("click", () => { direction != "left" && SendTargetDirection("right") });
             }
+            return () => {
+                socket.disconnect();
+                socket.close();
+            }
         })
-    }, [])
+    }, [socket])
     return (<>
-        <h1>Room {room_id}</h1>
-        <canvas id="canvas" width={500} height={500}></canvas>
-        <h2 id="score">Score: </h2>
+        <h1 className="text-center text-2xl my-3">Snakeish</h1>
+        <div className="grid place-content-center lg:grid-cols-2 grid-cols-1 gap-y-5">
+            <div className="flex justify-center align-center">
+                <canvas id="canvas" width={480} height={480}></canvas>
+            </div>
+            <div className="scores flex justify-center items-start">
+                <table className="table-auto border-collapse text-lg">
+                    <thead>
+                        <tr>
+                            <th className="font-semibold pb-2">
+                                Name
+                            </th>
+                            <th className="font-semibold pb-2">
+                                Score
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y">
+                        {
+                            otherPlayers.sort((a, b) => a.score < b.score).map((player, index) => {
+                                return (<tr key={index} >
+                                    <td className="p-3">{player.name}</td>
+                                    <td>{player.score}</td>
+                                </tr>)
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div id="touch-controls">
-            <button id="move-up" className={styles.moveUp + " "+styles.arrow} style={{ display: "none" }}>Up</button>
-            <button id="move-down" className={styles.moveDown + " "+styles.arrow} style={{ display: "none" }}>Down</button>
-            <button id="move-left" className={styles.moveLeft + " "+styles.arrow}style={{ display: "none" }}>Left</button>
-            <button id="move-right" className={styles.moveRight + " "+styles.arrow} style={{ display: "none" }}>Right</button>
+            <button id="move-up" className={styles.moveUp + " " + styles.arrow} style={{ display: "none" }}>Up</button>
+            <button id="move-down" className={styles.moveDown + " " + styles.arrow} style={{ display: "none" }}>Down</button>
+            <button id="move-left" className={styles.moveLeft + " " + styles.arrow} style={{ display: "none" }}>Left</button>
+            <button id="move-right" className={styles.moveRight + " " + styles.arrow} style={{ display: "none" }}>Right</button>
         </div>
     </>)
 }
