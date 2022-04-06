@@ -1,3 +1,4 @@
+import { setCookies } from "cookies-next";
 import { useRouter } from "next/router";
 import { Col, Container, Row } from "styled-bootstrap-grid";
 import styled from "styled-components";
@@ -72,12 +73,13 @@ const StartForm = styled.div`
 
 export default function Home() {
   const router = useRouter();
-  
+
   const JoinRoom = () => {
     let room_input = document.getElementById("room_input").value;
     let name_input = document.getElementById("name_input").value;
     if (room_input && name_input)
       if (room_input != "" && name_input != "") {
+        setCookies("player_name", name_input, { maxAge: 60 * 60 * 24 * 7 });
         router.push(`/room/${room_input}`);
       }
   };

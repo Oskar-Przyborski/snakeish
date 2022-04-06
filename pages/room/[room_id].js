@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { io } from 'socket.io-client'
 import { useDisconnectSocketOnLeave } from "../../components/disconnectSocketOnLeave";
 import styles from "../../styles/arrows.module.css"
+import { getCookie } from "cookies-next";
 export default function Room({ room_id }) {
     let [socket, setSocket] = useState(null);
     let [playerScore, setPlayerScore] = useState(0);
@@ -9,16 +10,18 @@ export default function Room({ room_id }) {
     useDisconnectSocketOnLeave(socket, true);
 
     useEffect(() => {
+        
         setSocket(io("https://snakeish-backend.herokuapp.com/rooms"));
         //setSocket(io("http://localhost:8080/rooms"));
     }, [])
     useEffect(() => {
+        const player_name = getCookie("player_name");
         if (!socket) return;
 
         socket.removeAllListeners();
         socket.on("connect", () => {
             socket.removeAllListeners()
-            socket.emit('join-room', room_id);
+            socket.emit('join-room', room_id, player_name);
 
             const GRID_SIZE = 16;
             const CELL_SIZE = 30;
