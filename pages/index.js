@@ -19,12 +19,14 @@ const TextInput = styled.div`
     border:none;
     border-bottom:1px solid #a0ecd0;
     background-color:transparent;
-    transition: border-bottom 0.2s;
+    transition: border-bottom 0.2s, margin-bottom 0.2s;
+    width:90%;
   }
   input:focus { 
     outline:none;
     border-bottom-color: #a0ecd0;
     border-bottom-width: 3px;
+    margin-bottom: -2px;
   }
 
   label {
@@ -57,19 +59,24 @@ const Button = styled.button`
   display: inline-block;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
-  &:focus, &:active, &:hover {
+  &:active, &:hover {
     background-color: #a0ecd0;
     color: black;
   }
 `;
 
-const StartForm = styled.div`
+const FlexCenter = styled.div`
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
 `;
-
+const Outline = styled.div`
+  border: 3px solid #a0ecd0;
+  border-radius:.6em;
+  padding: 3em;
+  margin: 1em;
+`
 
 export default function Home() {
   const router = useRouter();
@@ -84,6 +91,9 @@ export default function Home() {
       }
   };
 
+  const CreateRoom = () => {
+
+  }
   return (
     <>
       <Container>
@@ -92,17 +102,39 @@ export default function Home() {
             <Title>Snakeish</Title>
           </Col>
         </Row>
-        <StartForm>
-          <TextInput>
-            <input id="name_input" required autoComplete="off" />
-            <label>Nickname</label>
-          </TextInput>
-          <TextInput>
-            <input id="room_input" required autoComplete="off" />
-            <label>Room</label>
-          </TextInput>
-          <Button onClick={JoinRoom}>Join Room</Button>
-        </StartForm>
+        <Row style={{ marginBottom: "45px" }}>
+          <Col>
+            <FlexCenter>
+              <TextInput>
+                <input id="name_input" required autoComplete="off" />
+                <label>Nickname</label>
+              </TextInput>
+            </FlexCenter>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6}>
+            <Outline>
+              <FlexCenter>
+                <TextInput>
+                  <input id="room_input" required autoComplete="off" width={"80%"}/>
+                  <label>Room</label>
+                </TextInput>
+                <Button onClick={JoinRoom}>Join room</Button>
+              </FlexCenter>
+            </Outline>
+          </Col>
+          <Col md={6}>
+            <Outline>
+              <FlexCenter>
+                <h1 style={{marginTop:".3em"}}>Don't have a room?</h1>
+                <Button onClick={CreateRoom}>Create room</Button>
+                <br/>
+                (available soon)
+              </FlexCenter>
+            </Outline>
+          </Col>
+        </Row>
       </Container>
     </>
   )

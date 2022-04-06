@@ -10,7 +10,6 @@ export default function Room({ room_id }) {
     useDisconnectSocketOnLeave(socket, true);
 
     useEffect(() => {
-        
         setSocket(io("https://snakeish-backend.herokuapp.com/rooms"));
         //setSocket(io("http://localhost:8080/rooms"));
     }, [])
