@@ -127,7 +127,7 @@ export default function Home() {
           <Col md={6}>
             <Outline>
               <FlexCenter>
-                <h1 style={{marginTop:".3em"}}>Don't have a room?</h1>
+                <h1 style={{marginTop:".3em"}}>Don&apos;t have a room?</h1>
                 <Button onClick={CreateRoom}>Create room</Button>
                 <br/>
                 (available soon)
