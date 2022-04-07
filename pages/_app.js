@@ -1,5 +1,9 @@
 import { createGlobalStyle } from 'styled-components'
 import { BaseCSS } from 'styled-bootstrap-grid'
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
+
 const GlobalStyle = createGlobalStyle`
   html,
   body {
