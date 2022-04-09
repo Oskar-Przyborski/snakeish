@@ -33,7 +33,7 @@ const Title = styled.h1`
 `;
 const TextInput = styled.div`
   position:relative; 
-  margin-bottom:35px; 
+  margin:2.3em 1em 1em 1em; 
   input {
     color: #fff;
     font-size:18px;
@@ -73,7 +73,6 @@ const TextInput = styled.div`
 const Button = styled.button`
   -webkit-tap-highlight-color: transparent;
   background-color: transparent;
-  margin: 0.5em 0.5em;
   font-size:1.3em;
   border-radius:.4em;
   border: 3px solid #8BE8CB;
@@ -83,6 +82,7 @@ const Button = styled.button`
   display: inline-block;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
+  margin: ${props => props.margin ? props.margin : "0.5em"};
   ${props => props.bold && "font-weight: bold;"}
   ${props => props.filled && `background-color: #8BE8CB; 
   color: #000;`}
@@ -102,7 +102,7 @@ const Outline = styled.div`
 const Flex = styled.div`
   display:flex;
   flex-direction:${props => props.column ? "column" : "row"};
-  align-items: ${props => props.alignCenter ? "center" : "flex-start"};
+  align-items: ${props => props.align ? props.align : "center"};
   justify-content: ${props => props.justifyContent ? props.justifyContent : "flex-start"};
 `
 export {
