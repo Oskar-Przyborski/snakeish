@@ -126,7 +126,7 @@ export default function Room({ room_id }) {
 
 export async function getServerSideProps(context) {
     const room_id = context.query.room_id;
-    const doesExist = await fetch("http://snakeish-backend.herokuapp.com/api/room-exists", {
+    const doesExist = await fetch("https://snakeish-backend.herokuapp.com/api/room-exists", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

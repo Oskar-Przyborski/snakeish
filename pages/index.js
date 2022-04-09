@@ -8,7 +8,7 @@ import AvailableRoomsListItem from "../components/AvailableRoomsListItem";
 import { faFaceSadCry } from "@fortawesome/free-regular-svg-icons";
 import RefreshIcon from "../components/RefreshIcon";
 
-const backendURL = "http://snakeish-backend.herokuapp.com";
+const backendURL = "https://snakeish-backend.herokuapp.com";
 export default function Home(props) {
   const router = useRouter();
   const [rooms, setRooms] = useState(props.rooms);
