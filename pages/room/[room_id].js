@@ -6,7 +6,7 @@ import { getCookie, setCookies } from "cookies-next";
 import { Title, Button, Flex, TextInput } from "../../styles/styled-components";
 import { Container, Row, Col } from "styled-bootstrap-grid";
 import Leaderboard from "../../components/Leaderboard.js";
-import CanvasUtils from "../../utils/CanvasUtils.js";
+import CanvasUtils from "../../Utils/CanvasUtils.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link'
