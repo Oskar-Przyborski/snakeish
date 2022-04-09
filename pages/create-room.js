@@ -8,7 +8,7 @@ export default function CreateRoom() {
     const frame_time = document.getElementById("frame-time-input").value;
     const grid_size = document.getElementById("grid-size-input").value;
 
-    const resp = await fetch("http://snakeish-backend.herokuapp.com/api/create-room", {
+    const resp = await fetch("https://snakeish-backend.herokuapp.com/api/create-room", {
       method: "POST",
       headers: { "Content-Type": "application/json", },
       body: JSON.stringify({ room_ID, frame_time, grid_size })
