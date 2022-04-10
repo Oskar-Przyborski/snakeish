@@ -8,14 +8,13 @@ import AvailableRoomsListItem from "../components/AvailableRoomsListItem";
 import { faFaceSadCry } from "@fortawesome/free-regular-svg-icons";
 import RefreshIcon from "../components/RefreshIcon";
 
-const backendURL = "https://snakeish-backend.herokuapp.com";
 export default function Home(props) {
   const router = useRouter();
   const [rooms, setRooms] = useState(props.rooms);
 
   const refrestList = async () => {
     console.log(backendURL + "/api/rooms")
-    const response = await fetch(backendURL + "/api/rooms");
+    const response = await fetch(props.backendURL + "/api/rooms");
     const data = await response.json();
     setRooms(data);
   }
@@ -60,11 +59,13 @@ export default function Home(props) {
   )
 }
 export async function getServerSideProps(context) {
+  const backendURL = process.env.BACKEND_URL || "http://localhost:8080";
   const resp = await fetch(backendURL + "/api/rooms")
   const rooms = await resp.json()
   return {
     props: {
-      rooms
+      rooms,
+      backendURL
     }
   }
 }

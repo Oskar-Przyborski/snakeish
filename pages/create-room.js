@@ -2,13 +2,14 @@ import { faTag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container, Row, Col } from "styled-bootstrap-grid"
 import { FlexCenter, Outline, Title, TextInput, Button, Flex } from "../styles/styled-components"
-export default function CreateRoom() {
+
+export default function CreateRoom(props) {
   const createRoomHandle = async () => {
     const room_ID = document.getElementById("room-id-input").value;
     const frame_time = document.getElementById("frame-time-input").value;
     const grid_size = document.getElementById("grid-size-input").value;
 
-    const resp = await fetch("https://snakeish-backend.herokuapp.com/api/create-room", {
+    const resp = await fetch(props.backendURL + "/api/create-room", {
       method: "POST",
       headers: { "Content-Type": "application/json", },
       body: JSON.stringify({ room_ID, frame_time, grid_size })
@@ -47,4 +48,12 @@ export default function CreateRoom() {
       </Row>
     </Container>
   </>)
+}
+export function getServerSideProps(ctx) {
+  const backendURL = process.env.BACKEND_URL || "http://localhost:8080";
+  return {
+    props: {
+      backendURL
+    }
+  }
 }

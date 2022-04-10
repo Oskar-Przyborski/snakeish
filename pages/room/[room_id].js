@@ -11,15 +11,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link'
 
-export default function Room({ room_id }) {
+export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
     const [players, setPlayers] = useState([]);
     const [socket, setSocket] = useState(null);
 
     useDisconnectSocketOnLeave(socket);
     useEffect(() => {
-        //setSocket(io("http://localhost:8080/rooms"));
-        setSocket(io("https://snakeish-backend.herokuapp.com/rooms"));
+        setSocket(io(backendURL + "/rooms"));
     }, [])
     useEffect(() => {
         if (!socket) return;
@@ -125,8 +124,9 @@ export default function Room({ room_id }) {
 }
 
 export async function getServerSideProps(context) {
+    const backendURL = process.env.BACKEND_URL || "http://localhost:8080";
     const room_id = context.query.room_id;
-    const doesExist = await fetch("https://snakeish-backend.herokuapp.com/api/room-exists", {
+    const doesExist = await fetch(backendURL + "/api/room-exists", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -144,7 +144,8 @@ export async function getServerSideProps(context) {
     }
     return {
         props: {
-            room_id: room_id
+            room_id: room_id,
+            backendURL
         }
     }
 }
