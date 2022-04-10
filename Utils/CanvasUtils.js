@@ -20,17 +20,29 @@ const ClearCanvas = (canvas) => canvas.getContext("2d").clearRect(0, 0, canvas.w
 
 function DrawSnakes(ctx, CELL_SIZE, players) {
     if (players.length == 0) return;
-    
+
     for (let i = 0; i < players.length; i++) {
         const player = players[i];
-        DrawSnake(ctx, CELL_SIZE, player.gameData.snake);
+        DrawPlayerSnake(ctx, CELL_SIZE, player);
     }
 }
-function DrawSnake(ctx, CELL_SIZE, snake) {
+function DrawPlayerSnake(ctx, CELL_SIZE, player) {
+    const snake = player.gameData.snake;
+    const name = player.gameData.name;
     for (let i = 0; i < snake.length; i++) {
         const { x, y } = snake[i];
         FillCell(ctx, CELL_SIZE, x, y, "green");
     }
+    DrawText(ctx, name, snake[0].x, snake[0].y, CELL_SIZE);
+}
+function DrawText(ctx, text, xCell, yCell, CELL_SIZE) {
+    ctx.fillStyle = "white";
+    ctx.font = CELL_SIZE / 1.5 + "px Arial";
+    ctx.textAlign = "center";
+    //fill text centered vertically and horizontally
+    const x = xCell * CELL_SIZE + (CELL_SIZE / 2);
+    const y = yCell * CELL_SIZE + (CELL_SIZE / 2) + (CELL_SIZE / 6);
+    ctx.fillText(text, x, y);
 }
 function DrawApple(ctx, CELL_SIZE, apple) {
     FillCell(ctx, CELL_SIZE, apple.x, apple.y, "red");
@@ -40,19 +52,6 @@ function SendTargetDirection(targetDirection) {
     socket.emit('update-target-direction', targetDirection);
 }
 
-// //add keyboard input 
-// document.addEventListener("keydown", (e) => {
-//     const key = e.key;
-//     if ((key == "ArrowUp" || key == "w") && direction != "down") {
-//         SendTargetDirection("up");
-//     } else if ((key == "ArrowDown" || key == "s") && direction != "up") {
-//         SendTargetDirection("down");
-//     } else if ((key == "ArrowLeft" || key == "a") && direction != "right") {
-//         SendTargetDirection("left");
-//     } else if ((key == "ArrowRight" || key == "d") && direction != "left") {
-//         SendTargetDirection("right");
-//     }
-// });
 // //if mobile - show touch controls
 // function isMobile() {
 //     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
