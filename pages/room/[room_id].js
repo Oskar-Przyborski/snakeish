@@ -45,10 +45,10 @@ export default function Room({ room_id, backendURL }) {
         })
         const handleKeyDown = (e) => {
             const key = e.key;
-            if (key == "ArrowUp" || key == "w") SendTargetDirection("up");
-            else if (key == "ArrowDown" || key == "s") SendTargetDirection("down");
-            else if (key == "ArrowLeft" || key == "a") SendTargetDirection("left");
-            else if (key == "ArrowRight" || key == "d") SendTargetDirection("right");
+            if (key == "ArrowUp" || key.toLowerCase() == "w") SendTargetDirection("up");
+            else if (key == "ArrowDown" || key.toLowerCase() == "s") SendTargetDirection("down");
+            else if (key == "ArrowLeft" || key.toLowerCase() == "a") SendTargetDirection("left");
+            else if (key == "ArrowRight" || key.toLowerCase() == "d") SendTargetDirection("right");
         }
         document.removeEventListener("keydown", handleKeyDown);
         document.addEventListener("keydown", handleKeyDown)
