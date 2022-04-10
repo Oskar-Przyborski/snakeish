@@ -13,7 +13,6 @@ export default function Home(props) {
   const [rooms, setRooms] = useState(props.rooms);
 
   const refrestList = async () => {
-    console.log(backendURL + "/api/rooms")
     const response = await fetch(props.backendURL + "/api/rooms");
     const data = await response.json();
     setRooms(data);
