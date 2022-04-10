@@ -60,7 +60,7 @@ export default function CreateRoom(props) {
           <div style={{ backgroundColor: "#4A525A", borderRadius: "1em" }}>
             <Flex column justifyContent="center" alignCenter>
               <TextInput>
-                <input type="text" required id="room-id-input" autoComplete="off" defaultValue={getCookie("player_name") != null ? getCookie("player_name") + "'s room" : ""} />
+                <input type="text" required id="room-id-input" autoComplete="off" maxLength={10}/>
                 <label>Room name</label>
               </TextInput>
               <RangeInput>
