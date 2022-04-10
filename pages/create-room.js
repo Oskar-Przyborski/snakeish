@@ -60,7 +60,7 @@ export default function CreateRoom(props) {
           <div style={{ backgroundColor: "#4A525A", borderRadius: "1em" }}>
             <Flex column justifyContent="center" alignCenter>
               <TextInput>
-                <input type="text" required id="room-id-input" autoComplete="off" maxLength={10}/>
+                <input type="text" required id="room-id-input" autoComplete="off" maxLength={10} />
                 <label>Room name</label>
               </TextInput>
               <RangeInput>
@@ -81,7 +81,7 @@ export default function CreateRoom(props) {
                   <div>Big</div>
                 </Flex>
               </RangeInput>
-              <Button onClick={createRoomHandle}>CREATE</Button>
+              <Button onClick={createRoomHandle} bold>Create &#128640;</Button>
               <p id="output"></p>
             </Flex>
           </div>

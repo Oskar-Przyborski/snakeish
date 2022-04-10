@@ -41,8 +41,7 @@ export default function Home(props) {
                 ))}
               </ul> :
               <Title center>
-                <FontAwesomeIcon icon={faFaceSadCry} />
-                {" "}List is empty...
+                &#128557; List is empty...
               </Title>
             }
           </Col>
