@@ -1,9 +1,11 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getCookie } from "cookies-next";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { Container, Row, Col } from "styled-bootstrap-grid"
-import { Outline, Title, TextInput, Button, Flex, RangeInput } from "../styles/styled-components"
+import { Title, TextInput, Button, Flex, RangeInput } from "../styles/styled-components"
 
 export default function CreateRoom(props) {
+  const router = useRouter();
   const createRoomHandle = async () => {
     const room_ID = document.getElementById("room-id-input").value;
     const frame_time_idx = document.getElementById("frame-time-input").value;
@@ -48,8 +50,12 @@ export default function CreateRoom(props) {
       headers: { "Content-Type": "application/json", },
       body: JSON.stringify({ room_ID, frame_time, grid_size })
     })
-    const data = await resp.text()
-    document.getElementById("output").textContent = data
+    if (resp.status !== 200) {
+      const data = await resp.text()
+      document.getElementById("output").textContent = data
+    } else {
+      router.push("/room/" + room_ID);
+    }
   }
 
   return (<>
