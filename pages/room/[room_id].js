@@ -53,8 +53,7 @@ export default function Room({ room_id, backendURL }) {
         document.removeEventListener("keydown", handleKeyDown);
         document.addEventListener("keydown", handleKeyDown)
         function SendTargetDirection(targetDirection) {
-            if (playerInGame)
-                socket.emit('update-target-direction', targetDirection);
+            socket.emit('update-target-direction', targetDirection);
         }
         return () => {
             socket.disconnect();
