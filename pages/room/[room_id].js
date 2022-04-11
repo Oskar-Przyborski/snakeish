@@ -96,7 +96,7 @@ export default function Room({ room_id, backendURL }) {
                     {playerInGame ?
                         <>
                             <div style={{ marginBottom: "auto" }}>
-                                <Leaderboard players={players} />
+                                <Leaderboard players={players} socketID={socket.id}/>
                             </div>
                             <div style={{ marginTop: "auto" }}>
                                 <Button bold margin="1.4em" onClick={leaveGame}>Leave game</Button>

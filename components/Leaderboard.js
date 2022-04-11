@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUser } from "@fortawesome/free-solid-svg-icons"
 import { Title } from "../styles/styled-components"
 export default function Leaderboard(props) {
     return (<div>
@@ -13,7 +15,7 @@ export default function Leaderboard(props) {
                 {
                     props.players.map((player, idx) => {
                         return <tr key={idx}>
-                            <td>{player.gameData.name}</td>
+                            <td>{(props.socketID == player.socketID ? <FontAwesomeIcon icon={faUser} /> : "")} {player.gameData.name}</td>
                             <td>{player.gameData.score}</td>
                         </tr>
                     })
