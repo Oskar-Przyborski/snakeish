@@ -26,6 +26,7 @@ export default function Room({ room_id, backendURL }) {
 
         let canvas = document.getElementById("canvas");
         let ctx = canvas.getContext("2d");
+        CanvasUtils.Config(canvas);
         window.onresize = () => {
             let canvasCol = document.getElementById("canvasCol");
             if (!canvasCol) return;
@@ -38,10 +39,10 @@ export default function Room({ room_id, backendURL }) {
             const { players, apple, GRID_SIZE } = data;
             const CELL_SIZE = canvas.width / GRID_SIZE;
             setPlayers(players);
-            CanvasUtils.ClearCanvas(canvas);
-            CanvasUtils.DrawGridOutline(canvas, GRID_SIZE, CELL_SIZE);
-            CanvasUtils.DrawSnakes(ctx, CELL_SIZE, players);
-            CanvasUtils.DrawApple(ctx, CELL_SIZE, apple);
+            CanvasUtils.ClearCanvas();
+            CanvasUtils.DrawGridOutline(GRID_SIZE, CELL_SIZE);
+            CanvasUtils.DrawSnakes(CELL_SIZE, players);
+            CanvasUtils.DrawApple(CELL_SIZE, apple);
         })
         const handleKeyDown = (e) => {
             const key = e.key;
