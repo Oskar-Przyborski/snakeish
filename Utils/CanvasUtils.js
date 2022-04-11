@@ -3,7 +3,7 @@ function Config(canvas) {
     configData.canvas = canvas;
     configData.ctx = canvas.getContext("2d");
 }
-function DrawGridOutline(GRID_SIZE,CELL_SIZE) {
+function DrawGridOutline(GRID_SIZE, CELL_SIZE) {
     for (let x = 0; x < GRID_SIZE + 1; x++) {
         configData.ctx.moveTo(x * CELL_SIZE, 0);
         configData.ctx.lineTo(x * CELL_SIZE, configData.canvas.height);
@@ -33,9 +33,10 @@ function DrawSnakes(CELL_SIZE, players) {
 function DrawPlayerSnake(CELL_SIZE, player) {
     const snake = player.gameData.snake;
     const name = player.gameData.name;
+    const color = player.gameData.color;
     for (let i = 0; i < snake.length; i++) {
         const { x, y } = snake[i];
-        FillCell(CELL_SIZE, x, y, "green");
+        FillCell(CELL_SIZE, x, y, color);
     }
     DrawText(name, snake[0].x, snake[0].y, CELL_SIZE);
 }
