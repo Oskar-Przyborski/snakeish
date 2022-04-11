@@ -3,17 +3,18 @@ import { io } from 'socket.io-client'
 import { useDisconnectSocketOnLeave } from "../../components/disconnectSocketOnLeave";
 import styles from "../../styles/arrows.module.css"
 import { getCookie, setCookies } from "cookies-next";
-import { Title, Button, Flex, TextInput } from "../../styles/styled-components";
+import { Title, Button, Flex, TextInput, ColorInput } from "../../styles/styled-components";
 import { Container, Row, Col } from "styled-bootstrap-grid";
 import Leaderboard from "../../components/Leaderboard.js";
 import CanvasUtils from "../../Utils/CanvasUtils.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link'
 
 export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
     const [players, setPlayers] = useState([]);
+    const [selectedPlayerColor, setSelectedPlayerColor] = useState(0);
     const [socket, setSocket] = useState(null);
 
     useDisconnectSocketOnLeave(socket);
@@ -26,6 +27,7 @@ export default function Room({ room_id, backendURL }) {
 
         let canvas = document.getElementById("canvas");
         let ctx = canvas.getContext("2d");
+        CanvasUtils.Config(canvas);
         window.onresize = () => {
             let canvasCol = document.getElementById("canvasCol");
             if (!canvasCol) return;
@@ -38,17 +40,17 @@ export default function Room({ room_id, backendURL }) {
             const { players, apple, GRID_SIZE } = data;
             const CELL_SIZE = canvas.width / GRID_SIZE;
             setPlayers(players);
-            CanvasUtils.ClearCanvas(canvas);
-            CanvasUtils.DrawGridOutline(canvas, GRID_SIZE, CELL_SIZE);
-            CanvasUtils.DrawSnakes(ctx, CELL_SIZE, players);
-            CanvasUtils.DrawApple(ctx, CELL_SIZE, apple);
+            CanvasUtils.ClearCanvas();
+            CanvasUtils.DrawGridOutline(GRID_SIZE, CELL_SIZE);
+            CanvasUtils.DrawSnakes(CELL_SIZE, players);
+            CanvasUtils.DrawApple(CELL_SIZE, apple);
         })
         const handleKeyDown = (e) => {
             const key = e.key;
-            if (key == "ArrowUp" || key.toLowerCase() == "w") SendTargetDirection("up");
-            else if (key == "ArrowDown" || key.toLowerCase() == "s") SendTargetDirection("down");
-            else if (key == "ArrowLeft" || key.toLowerCase() == "a") SendTargetDirection("left");
-            else if (key == "ArrowRight" || key.toLowerCase() == "d") SendTargetDirection("right");
+            if (key == "ArrowUp" || key == "w" || key == "W") SendTargetDirection("up");
+            else if (key == "ArrowDown" || key == "s" || key == "S") SendTargetDirection("down");
+            else if (key == "ArrowLeft" || key == "a" || key == "A") SendTargetDirection("left");
+            else if (key == "ArrowRight" || key == "d" || key == "D") SendTargetDirection("right");
         }
         document.removeEventListener("keydown", handleKeyDown);
         document.addEventListener("keydown", handleKeyDown)
@@ -57,22 +59,36 @@ export default function Room({ room_id, backendURL }) {
         }
         return () => {
             socket.disconnect();
+            document.removeEventListener("keydown", handleKeyDown);
+            setPlayerInGame(false);
         }
     }, [socket])
 
     const joinGame = () => {
         const name = document.getElementById("name-input").value;
+        if (name.length > 10) return alert("Name is too long");
+        if (name.length < 1) return alert("Name is empty");
         setCookies("player_name", name, {
             maxAge: 604800,
         });
-        socket.emit("join-game", name)
-        setPlayerInGame(true);
+        socket.emit("join-game", name, selectedPlayerColor, (error, message) => {
+            if (!error) {
+                setPlayerInGame(true);
+            } else {
+                alert(message);
+            }
+        })
     }
     const leaveGame = () => {
         socket.emit("leave-game");
         setPlayerInGame(false);
     }
-
+    const changeColor = (shift) => {
+        const COLORS_COUNT = 6;
+        let newColor = (selectedPlayerColor + shift) % COLORS_COUNT;
+        if (newColor < 0) newColor = COLORS_COUNT - 1;
+        setSelectedPlayerColor(newColor);
+    }
     return (<>
         <Flex justifyContent="center">
             <div style={{ marginRight: "auto" }}>
@@ -95,7 +111,7 @@ export default function Room({ room_id, backendURL }) {
                     {playerInGame ?
                         <>
                             <div style={{ marginBottom: "auto" }}>
-                                <Leaderboard players={players} />
+                                <Leaderboard players={players} socketID={socket.id} />
                             </div>
                             <div style={{ marginTop: "auto" }}>
                                 <Button bold margin="1.4em" onClick={leaveGame}>Leave game</Button>
@@ -104,9 +120,14 @@ export default function Room({ room_id, backendURL }) {
                         : <>
                             <Flex alignCenter justifyContent="center" column>
                                 <TextInput>
-                                    <input type="text" required id="name-input" defaultValue={getCookie("player_name") != null ? getCookie("player_name") : ""} />
+                                    <input type="text" required id="name-input" defaultValue={getCookie("player_name") != null ? getCookie("player_name") : ""} maxLength={10} />
                                     <label>Nickname</label>
                                 </TextInput>
+                                <ColorInput color={selectedPlayerColor}>
+                                    <FontAwesomeIcon icon={faChevronLeft} onClick={() => changeColor(-1)} />
+                                    <div></div>
+                                    <FontAwesomeIcon icon={faChevronRight} onClick={() => changeColor(1)} />
+                                </ColorInput>
                                 <Button onClick={joinGame}>Join game</Button>
                             </Flex>
                         </>

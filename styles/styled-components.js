@@ -18,6 +18,14 @@ export const device = {
   desktop: `(min-width: ${size.desktop})`,
   desktopL: `(min-width: ${size.desktop})`
 };
+export const snakeColors = [
+  "#5cd67f",
+  "#add65c",
+  "#d68b5c",
+  "#5ccad6",
+  "#5e5cd6",
+  "#d65cc4"
+]
 const Title = styled.h1`
   ${props => props.center && `text-align: center;`}
   margin: 0.5em 0;
@@ -141,10 +149,27 @@ const RangeInput = styled.div`
     }
   }
 `
+const ColorInput = styled.div`
+  user-select:none;
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  font-size:1.3em;
+  color:#8BE8CB;
+  div{
+    font-weight:bold;
+    margin:1em 1.5em;
+    padding:1em;
+    background-color: ${props => snakeColors[props.color]};
+    border-radius:1em;
+    border:3px solid #8BE8CB;
+  }
+`
 
 export {
   Title,
   TextInput,
+  ColorInput,
   RangeInput,
   Button,
   Flex,

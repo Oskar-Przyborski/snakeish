@@ -1,55 +1,56 @@
-function DrawGridOutline(canvas, GRID_SIZE, CELL_SIZE) {
-    const ctx = canvas.getContext("2d");
+const configData = { canvas: null }
+function Config(canvas) {
+    configData.canvas = canvas;
+    configData.ctx = canvas.getContext("2d");
+}
+function DrawGridOutline(GRID_SIZE, CELL_SIZE) {
     for (let x = 0; x < GRID_SIZE + 1; x++) {
-        ctx.moveTo(x * CELL_SIZE, 0);
-        ctx.lineTo(x * CELL_SIZE, canvas.height);
+        configData.ctx.moveTo(x * CELL_SIZE, 0);
+        configData.ctx.lineTo(x * CELL_SIZE, configData.canvas.height);
     }
     for (let y = 0; y < GRID_SIZE + 1; y++) {
-        ctx.moveTo(0, y * CELL_SIZE);
-        ctx.lineTo(canvas.width, y * CELL_SIZE);
+        configData.ctx.moveTo(0, y * CELL_SIZE);
+        configData.ctx.lineTo(configData.canvas.width, y * CELL_SIZE);
     }
-    ctx.strokeStyle = "black";
-    ctx.stroke();
+    configData.ctx.strokeStyle = "black";
+    configData.ctx.stroke();
 }
-function FillCell(ctx, CELL_SIZE, x, y, color) {
-    ctx.fillStyle = color;
-    ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+function FillCell(CELL_SIZE, x, y, color) {
+    configData.ctx.fillStyle = color;
+    configData.ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
-const ClearCanvas = (canvas) => canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+const ClearCanvas = () => configData.ctx.clearRect(0, 0, configData.canvas.width, configData.canvas.height);
 
-function DrawSnakes(ctx, CELL_SIZE, players) {
+function DrawSnakes(CELL_SIZE, players) {
     if (players.length == 0) return;
 
     for (let i = 0; i < players.length; i++) {
         const player = players[i];
-        DrawPlayerSnake(ctx, CELL_SIZE, player);
+        DrawPlayerSnake(CELL_SIZE, player);
     }
 }
-function DrawPlayerSnake(ctx, CELL_SIZE, player) {
+function DrawPlayerSnake(CELL_SIZE, player) {
     const snake = player.gameData.snake;
     const name = player.gameData.name;
+    const color = player.gameData.color;
     for (let i = 0; i < snake.length; i++) {
         const { x, y } = snake[i];
-        FillCell(ctx, CELL_SIZE, x, y, "green");
+        FillCell(CELL_SIZE, x, y, color);
     }
-    DrawText(ctx, name, snake[0].x, snake[0].y, CELL_SIZE);
+    DrawText(name, snake[0].x, snake[0].y, CELL_SIZE);
 }
-function DrawText(ctx, text, xCell, yCell, CELL_SIZE) {
-    ctx.fillStyle = "white";
-    ctx.font = CELL_SIZE / 1.5 + "px Arial";
-    ctx.textAlign = "center";
+function DrawText(text, xCell, yCell, CELL_SIZE) {
+    configData.ctx.fillStyle = "white";
+    configData.ctx.font = CELL_SIZE / 1.8 + "px Arial";
+    configData.ctx.textAlign = "center";
     //fill text centered vertically and horizontally
     const x = xCell * CELL_SIZE + (CELL_SIZE / 2);
     const y = yCell * CELL_SIZE + (CELL_SIZE / 2) + (CELL_SIZE / 6);
-    ctx.fillText(text, x, y);
+    configData.ctx.fillText(text, x, y);
 }
-function DrawApple(ctx, CELL_SIZE, apple) {
-    FillCell(ctx, CELL_SIZE, apple.x, apple.y, "red");
-}
-
-function SendTargetDirection(targetDirection) {
-    socket.emit('update-target-direction', targetDirection);
+function DrawApple(CELL_SIZE, apple) {
+    FillCell(CELL_SIZE, apple.x, apple.y, "red");
 }
 
 // //if mobile - show touch controls
@@ -69,10 +70,10 @@ function SendTargetDirection(targetDirection) {
 
 
 export default {
+    Config,
     DrawGridOutline,
     FillCell,
     ClearCanvas,
     DrawSnakes,
     DrawApple,
-    SendTargetDirection,
 }
