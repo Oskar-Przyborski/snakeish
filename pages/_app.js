@@ -32,6 +32,16 @@ function MyApp({ Component, pageProps }) {
     <>
       <GlobalStyle />
       <BaseCSS />
+      <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FDJP074REL" />
+      <Script>
+        {`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-FDJP074REL');
+        `}
+      </Script>
       <Component {...pageProps} />
     </>
   )
