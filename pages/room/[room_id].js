@@ -46,10 +46,10 @@ export default function Room({ room_id, backendURL }) {
         })
         const handleKeyDown = (e) => {
             const key = e.key;
-            if (key == "ArrowUp" || key.toLowerCase() == "w") SendTargetDirection("up");
-            else if (key == "ArrowDown" || key.toLowerCase() == "s") SendTargetDirection("down");
-            else if (key == "ArrowLeft" || key.toLowerCase() == "a") SendTargetDirection("left");
-            else if (key == "ArrowRight" || key.toLowerCase() == "d") SendTargetDirection("right");
+            if (key == "ArrowUp" || key == "w" || key == "W") SendTargetDirection("up");
+            else if (key == "ArrowDown" || key == "s" || key == "S") SendTargetDirection("down");
+            else if (key == "ArrowLeft" || key == "a" || key == "A") SendTargetDirection("left");
+            else if (key == "ArrowRight" || key == "d" || key == "D") SendTargetDirection("right");
         }
         document.removeEventListener("keydown", handleKeyDown);
         document.addEventListener("keydown", handleKeyDown)
@@ -96,7 +96,7 @@ export default function Room({ room_id, backendURL }) {
                     {playerInGame ?
                         <>
                             <div style={{ marginBottom: "auto" }}>
-                                <Leaderboard players={players} socketID={socket.id}/>
+                                <Leaderboard players={players} socketID={socket.id} />
                             </div>
                             <div style={{ marginTop: "auto" }}>
                                 <Button bold margin="1.4em" onClick={leaveGame}>Leave game</Button>
