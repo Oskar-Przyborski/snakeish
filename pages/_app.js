@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 import { BaseCSS } from 'styled-bootstrap-grid'
 import { config } from '@fortawesome/fontawesome-svg-core'
+import Script from 'next/script'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 
@@ -33,7 +34,7 @@ function MyApp({ Component, pageProps }) {
       <GlobalStyle />
       <BaseCSS />
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-FDJP074REL" />
-      <Script>
+      <Script id="analytics script">
         {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
