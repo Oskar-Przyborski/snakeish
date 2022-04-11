@@ -41,7 +41,7 @@ function DrawPlayerSnake(CELL_SIZE, player) {
 }
 function DrawText(text, xCell, yCell, CELL_SIZE) {
     configData.ctx.fillStyle = "white";
-    configData.ctx.font = CELL_SIZE / 1.5 + "px Arial";
+    configData.ctx.font = CELL_SIZE / 1.8 + "px Arial";
     configData.ctx.textAlign = "center";
     //fill text centered vertically and horizontally
     const x = xCell * CELL_SIZE + (CELL_SIZE / 2);
