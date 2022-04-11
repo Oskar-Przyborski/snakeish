@@ -39,12 +39,10 @@ const TextInput = styled.div`
     font-size:18px;
     padding:10px 10px 10px 5px;
     display:block;
-    width:300px;
     border:none;
     border-bottom:1px solid #8BE8CB;
     background-color:transparent;
     transition: border-bottom 0.2s, margin-bottom 0.2s;
-    width:90%;
   }
   input:focus { 
     outline:none;
@@ -105,9 +103,49 @@ const Flex = styled.div`
   align-items: ${props => props.align ? props.align : "center"};
   justify-content: ${props => props.justifyContent ? props.justifyContent : "flex-start"};
 `
+
+const RangeInput = styled.div`
+  position:relative; 
+  margin:1em; 
+  width:235px;
+  input{
+    -webkit-appearance: none;
+    width:100%;
+    background: transparent;
+    outline: none;
+    height: 1.5em;
+    margin: 0.5em 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    -webkit-tap-highlight-color: transparent;
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      border: none;
+      height: 1.5em;
+      width: 1.5em;
+      border-radius: 50%;
+      background: #8BE8CB;
+      cursor: pointer;
+      margin-top: -0.5em;
+      &:hover{
+        box-shadow: 0 0 10px 1px #00000011;
+      }
+    }
+    &::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 0.5em;
+      cursor: pointer;
+      border: 1px solid #8BE8CB;
+      border-radius: 1.5em;
+    }
+  }
+`
+
 export {
   Title,
   TextInput,
+  RangeInput,
   Button,
   Flex,
   Outline
