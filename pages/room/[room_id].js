@@ -58,6 +58,8 @@ export default function Room({ room_id, backendURL }) {
         }
         return () => {
             socket.disconnect();
+            document.removeEventListener("keydown", handleKeyDown);
+            setPlayerInGame(false);
         }
     }, [socket])
 
