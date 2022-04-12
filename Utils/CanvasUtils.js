@@ -111,6 +111,11 @@ function DrawText(text, xCell, yCell, CELL_SIZE) {
     const y = yCell * CELL_SIZE + (CELL_SIZE / 2) + (CELL_SIZE / 6);
     configData.ctx.fillText(text, x, y);
 }
+function DrawApples(CELL_SIZE, apples) {
+    for (let i = 0; i < apples.length; i++) {
+        DrawApple(CELL_SIZE, apples[i]);
+    }
+}
 function DrawApple(CELL_SIZE, apple) {
     DrawRectShape((apple.x * CELL_SIZE) + (CELL_SIZE * 0.125), (apple.y * CELL_SIZE) + (CELL_SIZE * 0.125), CELL_SIZE * 0.75, CELL_SIZE * 0.75, "red");
 }
@@ -136,5 +141,5 @@ export default {
     DrawGridOutline,
     ClearCanvas,
     DrawSnakes,
-    DrawApple,
+    DrawApples,
 }

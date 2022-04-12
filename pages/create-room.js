@@ -6,6 +6,7 @@ import { Title, TextInput, Button, Flex, RangeInput } from "../styles/styled-com
 
 export default function CreateRoom(props) {
   const router = useRouter();
+  const [apples_quantity, setApplesQuantity] = useState(1);
   const createRoomHandle = async () => {
     const room_ID = document.getElementById("room-id-input").value;
     const frame_time_idx = document.getElementById("frame-time-input").value;
@@ -57,7 +58,7 @@ export default function CreateRoom(props) {
     const resp = await fetch(props.backendURL + "/api/create-room", {
       method: "POST",
       headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({ room_ID, frame_time, grid_size })
+      body: JSON.stringify({ room_ID, frame_time, grid_size, apples_quantity })
     })
     if (resp.status !== 200) {
       const data = await resp.text()
@@ -94,6 +95,13 @@ export default function CreateRoom(props) {
                   <div>Small</div>
                   <div>Normal</div>
                   <div>Big</div>
+                </Flex>
+              </RangeInput>
+              <RangeInput>
+                Apples quantity<br />
+                <Flex>
+                  <div style={{margin:"0.2em 1em"}}>{apples_quantity}</div>
+                  <input type="range" required id="grid-size-input" min={1} max={10} step={1} defaultValue={1} onChange={(x) => { setApplesQuantity(x.target.value) }} />
                 </Flex>
               </RangeInput>
               <Button onClick={createRoomHandle} bold>Create &#128640;</Button>
