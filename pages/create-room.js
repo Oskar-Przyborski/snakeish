@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Container, Row, Col } from "styled-bootstrap-grid"
@@ -69,6 +69,9 @@ export default function CreateRoom(props) {
   }
 
   return (<>
+    <Head>
+      <title>Create Room - Snakeish</title>
+    </Head>
     <Container>
       <Row>
         <Col>

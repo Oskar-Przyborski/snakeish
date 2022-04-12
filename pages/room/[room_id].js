@@ -10,6 +10,7 @@ import CanvasUtils from "../../Utils/CanvasUtils.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link'
+import Head from "next/head";
 
 export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
@@ -89,6 +90,9 @@ export default function Room({ room_id, backendURL }) {
         setSelectedPlayerColor(newColor);
     }
     return (<>
+        <Head>
+            <title>Snakeish Room: {room_id}</title>
+        </Head>
         <Flex justifyContent="center">
             <div style={{ marginRight: "auto" }}>
                 <Link href="/" passHref>
