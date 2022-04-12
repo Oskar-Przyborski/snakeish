@@ -3,10 +3,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Col, Container, Row } from "styled-bootstrap-grid";
 import { Title, Button, Flex } from "../styles/styled-components";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AvailableRoomsListItem from "../components/AvailableRoomsListItem";
-import { faFaceSadCry } from "@fortawesome/free-regular-svg-icons";
 import RefreshIcon from "../components/RefreshIcon";
+import Footer from "../components/Footer.js";
 
 export default function Home(props) {
   const router = useRouter();
@@ -21,7 +20,10 @@ export default function Home(props) {
     refrestList();
   }, []);
   return (
-    <>
+    <div style={{
+      position: "relative",
+      minHeight: "100vh"
+    }}>
       <Container>
         <Row>
           <Col>
@@ -53,7 +55,8 @@ export default function Home(props) {
           </Col>
         </Row>
       </Container>
-    </>
+      <Footer />
+    </div>
   )
 }
 export async function getServerSideProps(context) {

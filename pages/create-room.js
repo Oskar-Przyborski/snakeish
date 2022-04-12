@@ -100,7 +100,7 @@ export default function CreateRoom(props) {
               <RangeInput>
                 Apples quantity<br />
                 <Flex>
-                  <div style={{margin:"0.2em 1em"}}>{apples_quantity}</div>
+                  <div style={{ margin: "0.2em 1em" }}>{apples_quantity}</div>
                   <input type="range" required id="grid-size-input" min={1} max={10} step={1} defaultValue={1} onChange={(x) => { setApplesQuantity(x.target.value) }} />
                 </Flex>
               </RangeInput>
