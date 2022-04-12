@@ -26,7 +26,6 @@ export default function Room({ room_id, backendURL }) {
         socket.emit('join-room', room_id,);
 
         let canvas = document.getElementById("canvas");
-        let ctx = canvas.getContext("2d");
         CanvasUtils.Config(canvas);
         window.onresize = () => {
             let canvasCol = document.getElementById("canvasCol");
@@ -37,13 +36,13 @@ export default function Room({ room_id, backendURL }) {
             canvas.height = width;
         }
         socket.on("game-update", (data) => {
-            const { players, apple, GRID_SIZE } = data;
+            const { players, apples, GRID_SIZE } = data;
             const CELL_SIZE = canvas.width / GRID_SIZE;
             setPlayers(players);
             CanvasUtils.ClearCanvas();
             CanvasUtils.DrawGridOutline(GRID_SIZE, CELL_SIZE);
+            CanvasUtils.DrawApples(CELL_SIZE, apples);
             CanvasUtils.DrawSnakes(CELL_SIZE, players);
-            CanvasUtils.DrawApple(CELL_SIZE, apple);
         })
         const handleKeyDown = (e) => {
             const key = e.key;
