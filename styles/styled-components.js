@@ -110,12 +110,14 @@ const Flex = styled.div`
   flex-direction:${props => props.column ? "column" : "row"};
   align-items: ${props => props.align ? props.align : "center"};
   justify-content: ${props => props.justifyContent ? props.justifyContent : "flex-start"};
+  margin: ${props => props.margin ? props.margin : "0"};
+  padding: ${props => props.padding ? props.padding : "0"};
 `
 
 const RangeInput = styled.div`
   position:relative; 
-  margin:1em; 
-  width:235px;
+  margin:0.8em; 
+  width:${props => props.width ? props.width : "235px"};
   input{
     -webkit-appearance: none;
     width:100%;
@@ -166,6 +168,56 @@ const ColorInput = styled.div`
   }
 `
 
+const SwitchInput = styled.label`
+  position: relative;
+  display: block;
+  width: ${props => props.size ? props.size * 60 : 60}px;
+  height: ${props => props.size ? props.size * 34 : 34}px;
+  margin: ${props => props.margin ? props.margin : "0.3em 0.5em"};
+  input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  input:checked + .slider {
+    background-color: #8BE8CB;
+  }
+  input:focus + .slider {
+    box-shadow: 0 0 1px #8BE8CB;
+  }
+  input:checked + .slider:before {
+    transform: translateX(${props => props.size ? props.size * 26 : 26}px);
+  }
+  
+  .slider{
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #24272b;
+    transition: .4s;
+    border-radius: 2em;
+    &:before{
+      position: absolute;
+      content: "";
+      height: ${props => props.size ? props.size * 26 : 26}px;
+      width: ${props => props.size ? props.size * 26 : 26}px;
+      left: ${props => props.size ? props.size * 4 : 4}px;
+      bottom: ${props => props.size ? props.size * 4 : 4}px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+  }
+`
+const RedBg = styled.div`
+  background-color: #D62246;
+  border-radius: 1em;
+  padding: ${props => props.padding ? props.padding : "0.5em 1em"};
+  margin: ${props => props.margin ? props.margin : "0.5em"};
+`
 export {
   Title,
   TextInput,
@@ -173,5 +225,7 @@ export {
   RangeInput,
   Button,
   Flex,
-  Outline
+  Outline,
+  SwitchInput,
+  RedBg
 }
