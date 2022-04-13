@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Container, Row, Col } from "styled-bootstrap-grid"
-import { Title, TextInput, Button, Flex, RangeInput } from "../styles/styled-components"
+import { Title, TextInput, Button, Flex, RangeInput, SwitchInput, RedBg } from "../styles/styled-components"
 
 export default function CreateRoom(props) {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function CreateRoom(props) {
     const room_ID = document.getElementById("room-id-input").value;
     const frame_time_idx = document.getElementById("frame-time-input").value;
     const grid_size_idx = document.getElementById("grid-size-input").value;
-
+    const collideWithEnemies = document.getElementById("collide-with-enemies-input").checked;
     const frame_time = 0;
     switch (frame_time_idx) {
       case "1":
@@ -58,7 +58,7 @@ export default function CreateRoom(props) {
     const resp = await fetch(props.backendURL + "/api/create-room", {
       method: "POST",
       headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({ room_ID, frame_time, grid_size, apples_quantity })
+      body: JSON.stringify({ room_ID, frame_time, grid_size, apples_quantity, collideWithEnemies })
     })
     if (resp.status !== 200) {
       const data = await resp.text()
@@ -107,6 +107,13 @@ export default function CreateRoom(props) {
                   <input type="range" required id="grid-size-input" min={1} max={10} step={1} defaultValue={1} onChange={(x) => { setApplesQuantity(x.target.value) }} />
                 </Flex>
               </RangeInput>
+              <Flex margin="0.5em">
+                <div>Collide with enemies</div>
+                <SwitchInput size={0.8}>
+                  <input type="checkbox" />
+                  <span className="slider"></span>
+                </SwitchInput>
+              </Flex>
               <Button onClick={createRoomHandle} bold>Create &#128640;</Button>
               <p id="output"></p>
             </Flex>
