@@ -11,7 +11,7 @@ export default function CreateRoom(props) {
     const room_ID = document.getElementById("room-id-input").value;
     const frame_time_idx = document.getElementById("frame-time-input").value;
     const grid_size_idx = document.getElementById("grid-size-input").value;
-    const collideWithEnemies = document.getElementById("collide-with-enemies-input").checked;
+    const collide_with_enemies = document.getElementById("collide-with-enemies-input").checked;
     const frame_time = 0;
     switch (frame_time_idx) {
       case "1":
@@ -58,7 +58,7 @@ export default function CreateRoom(props) {
     const resp = await fetch(props.backendURL + "/api/create-room", {
       method: "POST",
       headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({ room_ID, frame_time, grid_size, apples_quantity, collideWithEnemies })
+      body: JSON.stringify({ room_ID, frame_time, grid_size, apples_quantity, collide_with_enemies })
     })
     if (resp.status !== 200) {
       const data = await resp.text()
@@ -110,7 +110,7 @@ export default function CreateRoom(props) {
               <Flex margin="0.5em">
                 <div>Collide with enemies</div>
                 <SwitchInput size={0.8}>
-                  <input type="checkbox" />
+                  <input type="checkbox" id="collide-with-enemies-input"/>
                   <span className="slider"></span>
                 </SwitchInput>
               </Flex>
