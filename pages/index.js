@@ -27,6 +27,7 @@ export default function Home(props) {
     }}>
       <Head>
         <title>Snakeish</title>
+        <meta name="google-site-verification" content="FDMhHEchGqgnn4gAt-QxgZNKZKKCVurZwytJiJipaKU" />
       </Head>
       <Container>
         <Row>
