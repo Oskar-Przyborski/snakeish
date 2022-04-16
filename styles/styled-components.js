@@ -41,7 +41,7 @@ const Title = styled.h1`
 `;
 const TextInput = styled.div`
   position:relative; 
-  margin:2.3em 1em 1em 1em; 
+  margin:1.5em 1em 1em 1em; 
   input {
     color: #fff;
     font-size:18px;
@@ -112,6 +112,7 @@ const Flex = styled.div`
   justify-content: ${props => props.justifyContent ? props.justifyContent : "flex-start"};
   margin: ${props => props.margin ? props.margin : "0"};
   padding: ${props => props.padding ? props.padding : "0"};
+  font-size: ${props => props.fontSize ? props.fontSize : "1em"};
 `
 
 const RangeInput = styled.div`
@@ -218,6 +219,41 @@ const RedBg = styled.div`
   padding: ${props => props.padding ? props.padding : "0.5em 1em"};
   margin: ${props => props.margin ? props.margin : "0.5em"};
 `
+const CreateRoomGrid = styled.div`
+    display: grid;
+    grid-template-columns: min fr;
+    border-radius:1em;
+    overflow:hidden;
+    .leftCol{
+        display:flex;
+        justify-content:center;
+        grid-column: 1;
+        padding:0.3em 1.5em;
+        background-color:#D62246;
+        &.odd{
+            background-color:#c71f40;
+        }
+    }
+    .rightCol{
+        display:flex;
+        align-items:center;
+        grid-column: 2;
+        font-size:1.2em;
+        padding:1em;
+        background-color:#4A525A;
+        &.odd{
+            background-color:#40474f;
+        }
+    }
+    .fullCol{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        grid-column: 1/3;
+        background-color:#8BE8CB;
+        color:black;
+    }
+`
 export {
   Title,
   TextInput,
@@ -227,5 +263,6 @@ export {
   Flex,
   Outline,
   SwitchInput,
-  RedBg
+  RedBg,
+  CreateRoomGrid
 }

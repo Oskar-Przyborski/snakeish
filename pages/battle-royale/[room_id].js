@@ -11,9 +11,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import Link from 'next/link'
 import Head from "next/head";
+import PlayersList from "../../components/PlayersList";
 
 export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
+    const [isGameStarted, setIsGameStarted] = useState(false);
     const [players, setPlayers] = useState([]);
     const [selectedPlayerColor, setSelectedPlayerColor] = useState(0);
     const [socket, setSocket] = useState(null);
@@ -37,13 +39,34 @@ export default function Room({ room_id, backendURL }) {
             canvas.height = width;
         }
         socket.on("game-update", (data) => {
-            const { players, apples, GRID_SIZE } = data;
-            const CELL_SIZE = canvas.width / GRID_SIZE;
-            setPlayers(players);
-            CanvasUtils.ClearCanvas();
-            CanvasUtils.DrawGridOutline(GRID_SIZE, CELL_SIZE);
-            CanvasUtils.DrawApples(CELL_SIZE, apples);
-            CanvasUtils.DrawSnakes(CELL_SIZE, players);
+            if (!data.game_status.started) {
+                if (isGameStarted) setIsGameStarted(false);
+                const min_players = data.min_players;
+                const waiting_players = data.players.length
+                setPlayers(data.players);
+                const countdown = data.countdown;
+                CanvasUtils.ClearCanvas();
+                CanvasUtils.DrawWaitingPlayers(waiting_players, min_players, countdown);
+            }
+            if (data.game_status.started && !data.game_status.ended) {
+                if (!isGameStarted) setIsGameStarted(true);
+                const { players, apples, grid_size, shrink_size } = data;
+                const cell_size = canvas.width / grid_size;
+                setPlayers(players);
+                CanvasUtils.ClearCanvas();
+                CanvasUtils.DrawGridOutline(grid_size, cell_size);
+                CanvasUtils.DrawApples(cell_size, apples);
+                CanvasUtils.DrawSnakes(cell_size, players);
+                CanvasUtils.DrawShrink(cell_size, grid_size, shrink_size);
+                return;
+            }
+            if (data.game_status.ended) {
+                setIsGameStarted(false);
+                setPlayers(data.players);
+                CanvasUtils.ClearCanvas();
+                
+                CanvasUtils.DrawEndGame(data.winner, data.restart_countdown);
+            }
         })
         const handleKeyDown = (e) => {
             const key = e.key;
@@ -93,7 +116,7 @@ export default function Room({ room_id, backendURL }) {
         <Head>
             <title>Snakeish Room: {room_id}</title>
         </Head>
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" margin="0 102px 0 0">
             <div style={{ marginRight: "auto" }}>
                 <Link href="/" passHref>
                     <Button padding="0.5em 1em" margin="0.5em 1em">
@@ -107,14 +130,14 @@ export default function Room({ room_id, backendURL }) {
             <Row style={{ borderRadius: "1em", overflow: "hidden" }}>
                 <Col lg={8} style={{ backgroundColor: "#4A525A", padding: "1em" }} id="canvasCol">
                     <Flex justifyContent="center" alignCenter style={{ margin: "0.5em" }}>
-                        <canvas id="canvas" width={600} height={600} />
+                        <canvas id="canvas" width={600} height={600} style={{ imageRendering: "pixelated" }} />
                     </Flex>
                 </Col>
                 <Col lg={4} style={{ backgroundColor: "#D62246", padding: "0em 0.5em", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                     {playerInGame ?
                         <>
                             <div style={{ marginBottom: "auto" }}>
-                                <Leaderboard players={players} socketID={socket.id} />
+                                {isGameStarted ? <Leaderboard players={players} socketID={socket.id} maxPlayers={5} /> : <PlayersList players={players} socketID={socket.id} maxPlayers={5} />}
                             </div>
                             <div style={{ marginTop: "auto" }}>
                                 <Button bold margin="1.4em" onClick={leaveGame}>Leave game</Button>

@@ -32,6 +32,7 @@ function DrawSnakes(CELL_SIZE, players) {
 }
 function DrawPlayerSnake(CELL_SIZE, player) {
     const snake = player.gameData.snake;
+    if (snake.length == 0) return;
     const name = player.gameData.name;
     const color = player.gameData.color;
     for (let i = 0; i < snake.length; i++) {
@@ -94,8 +95,6 @@ function DrawSnakeElement(CELL_SIZE, previousElement, currentElement, nextElemen
         case JSON.stringify({ prev: null, next: null }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.75, CELL_SIZE * 0.75, color);
             break;
-        default:
-            DrawRectShape(currentElementTopLeftPos.x, currentElementTopLeftPos.y, CELL_SIZE, CELL_SIZE, color);
     }
 }
 function DrawRectShape(x, y, width, height, color) {
@@ -120,6 +119,46 @@ function DrawApple(CELL_SIZE, apple) {
     DrawRectShape((apple.x * CELL_SIZE) + (CELL_SIZE * 0.125), (apple.y * CELL_SIZE) + (CELL_SIZE * 0.125), CELL_SIZE * 0.75, CELL_SIZE * 0.75, "red");
 }
 
+function DrawWaitingPlayers(waiting_players, min_players, countdown) {
+    let waiting_players_text = "Waiting for players...";
+    let players_count_text = `${waiting_players}/${min_players}`;
+    let countdown_text = `Starting in ${countdown}s`;
+
+    configData.ctx.fillStyle = "white";
+    configData.ctx.font = "30px Arial";
+    configData.ctx.textAlign = "center";
+    //fill text centered vertically and horizontally
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.fillText(waiting_players_text, x, y - 50);
+    configData.ctx.fillText(players_count_text, x, y);
+    if (countdown > 0)
+        configData.ctx.fillText(countdown_text, x, y + 50);
+}
+function DrawEndGame(winnerName, restartCountdown) {
+    let winner_text = `${winnerName} won!`;
+    let countdown_text = `Restarting in ${restartCountdown}s`;
+
+    configData.ctx.fillStyle = "white";
+    configData.ctx.font = "30px Arial";
+    configData.ctx.textAlign = "center";
+    //fill text centered vertically and horizontally
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.fillText(winner_text, x, y - 50);
+    configData.ctx.fillText(countdown_text, x, y);
+}
+function DrawShrink(CELL_SIZE, GRID_SIZE, shrink_size) {
+    configData.ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+    //top 
+    configData.ctx.fillRect(0, 0, GRID_SIZE * CELL_SIZE, CELL_SIZE * shrink_size);
+    //bottom
+    configData.ctx.fillRect(0, GRID_SIZE * CELL_SIZE - CELL_SIZE * shrink_size, GRID_SIZE * CELL_SIZE, CELL_SIZE * shrink_size);
+    //left
+    configData.ctx.fillRect(0, shrink_size * CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size*2) * CELL_SIZE);
+    //right
+    configData.ctx.fillRect(GRID_SIZE * CELL_SIZE - CELL_SIZE * shrink_size, shrink_size *CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size*2) * CELL_SIZE);
+}
 // //if mobile - show touch controls
 // function isMobile() {
 //     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -142,4 +181,7 @@ export default {
     ClearCanvas,
     DrawSnakes,
     DrawApples,
+    DrawWaitingPlayers,
+    DrawEndGame,
+    DrawShrink
 }

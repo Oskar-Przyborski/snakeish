@@ -54,7 +54,7 @@ export default function Home(props) {
           <Col md={3} style={{ backgroundColor: "#D62246", padding: "1em" }}>
             <Flex justifyCenter column alignCenter>
               <Title center>Wanna have own room?</Title>
-              <Link href="/create-room" passHref><Button bold>Create room</Button></Link>
+              <Link href="/create-room/classic" passHref><Button bold>Create room</Button></Link>
             </Flex>
           </Col>
         </Row>
