@@ -58,13 +58,17 @@ export default function Room({ room_id, backendURL }) {
                 CanvasUtils.DrawApples(cell_size, apples);
                 CanvasUtils.DrawSnakes(cell_size, players);
                 CanvasUtils.DrawShrink(cell_size, grid_size, shrink_size);
+                if (data.freeze_time >= 0) CanvasUtils.DrawFreezeTime(data.freeze_time);
+                else
+                    if (data.shrink_time >= 0) CanvasUtils.DrawMapShrinkTime(data.shrink_time);
+                    else if( data.kill_shortest_time >= 0) CanvasUtils.DrawKillShortestTime(data.kill_shortest_time);
                 return;
             }
             if (data.game_status.ended) {
                 setIsGameStarted(false);
                 setPlayers(data.players);
                 CanvasUtils.ClearCanvas();
-                
+
                 CanvasUtils.DrawEndGame(data.winner, data.restart_countdown);
             }
         })

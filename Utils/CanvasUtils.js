@@ -77,19 +77,27 @@ function DrawSnakeElement(CELL_SIZE, previousElement, currentElement, nextElemen
             DrawRectShape(currentElementTopLeftPos.x, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.875, CELL_SIZE * 0.75, color);
             break;
         case JSON.stringify({ prev: null, next: { x: 1, y: 0 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 1, y: 0 } }):
         case JSON.stringify({ prev: { x: 1, y: 0 }, next: null }):
+        case JSON.stringify({ prev: { x: 1, y: 0 }, next: { x: 0, y: 0 } }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.875, CELL_SIZE * 0.75, color);
             break;
         case JSON.stringify({ prev: { x: -1, y: 0 }, next: null }):
+        case JSON.stringify({ prev: { x: -1, y: 0 }, next: { x: 0, y: 0 } }):
         case JSON.stringify({ prev: null, next: { x: -1, y: 0 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: -1, y: 0 } }):
             DrawRectShape(currentElementTopLeftPos.x, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.875, CELL_SIZE * 0.75, color);
             break;
         case JSON.stringify({ prev: null, next: { x: 0, y: -1 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 0, y: -1 } }):
         case JSON.stringify({ prev: { x: 0, y: -1 }, next: null }):
+        case JSON.stringify({ prev: { x: 0, y: -1 }, next: { x: 0, y: 0 } }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y, CELL_SIZE * 0.75, CELL_SIZE * 0.875, color);
             break;
         case JSON.stringify({ prev: { x: 0, y: 1 }, next: null }):
+        case JSON.stringify({ prev: { x: 0, y: 1 }, next: { x: 0, y: 0 } }):
         case JSON.stringify({ prev: null, next: { x: 0, y: 1 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 0, y: 1 } }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.75, CELL_SIZE * 0.875, color);
             break;
         case JSON.stringify({ prev: null, next: null }):
@@ -116,7 +124,11 @@ function DrawApples(CELL_SIZE, apples) {
     }
 }
 function DrawApple(CELL_SIZE, apple) {
-    DrawRectShape((apple.x * CELL_SIZE) + (CELL_SIZE * 0.125), (apple.y * CELL_SIZE) + (CELL_SIZE * 0.125), CELL_SIZE * 0.75, CELL_SIZE * 0.75, "red");
+    let color = "red"
+    if (apple.value === 3) {
+        color = "gold"
+    }
+    DrawRectShape((apple.x * CELL_SIZE) + (CELL_SIZE * 0.125), (apple.y * CELL_SIZE) + (CELL_SIZE * 0.125), CELL_SIZE * 0.75, CELL_SIZE * 0.75, color);
 }
 
 function DrawWaitingPlayers(waiting_players, min_players, countdown) {
@@ -155,9 +167,37 @@ function DrawShrink(CELL_SIZE, GRID_SIZE, shrink_size) {
     //bottom
     configData.ctx.fillRect(0, GRID_SIZE * CELL_SIZE - CELL_SIZE * shrink_size, GRID_SIZE * CELL_SIZE, CELL_SIZE * shrink_size);
     //left
-    configData.ctx.fillRect(0, shrink_size * CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size*2) * CELL_SIZE);
+    configData.ctx.fillRect(0, shrink_size * CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size * 2) * CELL_SIZE);
     //right
-    configData.ctx.fillRect(GRID_SIZE * CELL_SIZE - CELL_SIZE * shrink_size, shrink_size *CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size*2) * CELL_SIZE);
+    configData.ctx.fillRect(GRID_SIZE * CELL_SIZE - CELL_SIZE * shrink_size, shrink_size * CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size * 2) * CELL_SIZE);
+}
+function DrawFreezeTime(freezeTime) {
+    configData.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    configData.ctx.font = "bold 72px Arial";
+    configData.ctx.textAlign = "center";
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.fillText(freezeTime, x, y);
+}
+function DrawMapShrinkTime(shrinkTime) {
+    configData.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    configData.ctx.textAlign = "center";
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.font = "24px Arial";
+    configData.ctx.fillText("shrinking in", x, y - 32);
+    configData.ctx.font = "64px Arial";
+    configData.ctx.fillText(shrinkTime, x, y + 24);
+}
+function DrawKillShortestTime(killShortestTime) {
+    configData.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    configData.ctx.textAlign = "center";
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.font = "24px Arial";
+    configData.ctx.fillText("killing shortest snake in", x, y - 32);
+    configData.ctx.font = "64px Arial";
+    configData.ctx.fillText(killShortestTime, x, y + 24);
 }
 // //if mobile - show touch controls
 // function isMobile() {
@@ -183,5 +223,8 @@ export default {
     DrawApples,
     DrawWaitingPlayers,
     DrawEndGame,
-    DrawShrink
+    DrawShrink,
+    DrawFreezeTime,
+    DrawMapShrinkTime,
+    DrawKillShortestTime
 }
