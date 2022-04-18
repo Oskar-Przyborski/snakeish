@@ -13,11 +13,13 @@ export default function CreateRoomBattleRoyale(props) {
     const [minPlayers, setMinPlayers] = useState(2);
     const createRoomHandle = async () => {
         const room_ID = document.getElementById("room-id-input").value;
+        const dead_zone_kills = document.getElementById("dead-zone-kills-input").checked;
         const data = {
             room_ID,
             gameModeIndex: 1,
             settings: {
-                min_players: minPlayers
+                min_players: minPlayers,
+                dead_zone_kills
             }
         }
         const resp = await fetch(props.backendURL + "/api/create-room", {
@@ -80,6 +82,18 @@ export default function CreateRoomBattleRoyale(props) {
                 </div>
                 <div className="rightCol">
                     Minimum number of players needed to start the game. The game will start 15s after the number of players reaches this number.
+                </div>
+                <div className="leftCol odd">
+                    <Flex margin="0.5em">
+                        <div>Dead zone kills instantly</div>
+                        <SwitchInput size={0.8}>
+                            <input type="checkbox" id="dead-zone-kills-input" />
+                            <span className="slider"></span>
+                        </SwitchInput>
+                    </Flex>
+                </div >
+                <div className="rightCol odd">
+                    If checked, dead zone kills instantly, instead of slowly shrotening the snake.
                 </div>
                 <div className="leftCol">
                     <Button onClick={createRoomHandle} bold>Create &#128640;</Button>
