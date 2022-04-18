@@ -165,6 +165,12 @@ const ColorInput = styled.div`
     border:3px solid #8BE8CB;
   }
 `
+const RedBg = styled.div`
+  background-color: #d62246;
+  border-radius: 1em;
+  padding: 1em;
+  margin: 1em;
+`
 
 export {
   Title,
@@ -173,5 +179,6 @@ export {
   RangeInput,
   Button,
   Flex,
-  Outline
+  Outline,
+  RedBg
 }

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Col, Container, Row } from "styled-bootstrap-grid";
-import { Title, Button, Flex } from "../styles/styled-components";
+import { Title, Button, Flex, RedBg } from "../styles/styled-components";
 import AvailableRoomsListItem from "../components/AvailableRoomsListItem";
 import RefreshIcon from "../components/RefreshIcon";
 import Footer from "../components/Footer.js";
@@ -35,6 +35,14 @@ export default function Home(props) {
             <Title center>Snakeish</Title>
           </Col>
         </Row>
+        {props.currentWorkingVersionURL != null && <Row>
+          <Col>
+            <RedBg style={{ textAlign: "center" }}>
+              This version is propably not working properly.  <Link href={props.currentWorkingVersionURL} ><span style={{ textDecoration: "underline", cursor: "pointer" }}>This version</span></Link> should work, if not please wait for updates.
+            </RedBg>
+          </Col>
+        </Row>}
+
         <Row style={{ borderRadius: "1em", overflow: "hidden" }}>
           <Col md={9} style={{ backgroundColor: "#4A525A", padding: "0.5em 2em 0.5em 0" }}>
             <Flex alignCenter justifyContent="space-between">
@@ -68,10 +76,12 @@ export async function getServerSideProps(context) {
   const backendURL = process.env.BACKEND_URL || "http://localhost:8080";
   const resp = await fetch(backendURL + "/api/rooms")
   const rooms = await resp.json()
+  const currentWorkingVersionURL = process.env.CURRENT_WORKING_VERSION_URL || null;
   return {
     props: {
       rooms,
-      backendURL
+      backendURL,
+      currentWorkingVersionURL
     }
   }
 }
