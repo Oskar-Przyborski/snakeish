@@ -107,7 +107,7 @@ export default function Room({ room_id, backendURL }) {
             <Row style={{ borderRadius: "1em", overflow: "hidden" }}>
                 <Col lg={8} style={{ backgroundColor: "#4A525A", padding: "1em" }} id="canvasCol">
                     <Flex justifyContent="center" alignCenter style={{ margin: "0.5em" }}>
-                        <canvas id="canvas" width={600} height={600} />
+                        <canvas id="canvas" width={600} height={600} style={{imageRendering:"crisp-edges"}}/>
                     </Flex>
                 </Col>
                 <Col lg={4} style={{ backgroundColor: "#D62246", padding: "0em 0.5em", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>

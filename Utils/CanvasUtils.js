@@ -1,5 +1,10 @@
 const configData = { canvas: null }
 function Config(canvas) {
+    let DmSansFont = new FontFace(
+        "DM Sans",
+        "url(https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap)"
+    );
+    document.fonts.add(DmSansFont)
     configData.canvas = canvas;
     configData.ctx = canvas.getContext("2d");
 }
@@ -111,7 +116,7 @@ function DrawRectShape(x, y, width, height, color) {
 }
 function DrawText(text, xCell, yCell, CELL_SIZE) {
     configData.ctx.fillStyle = "white";
-    configData.ctx.font = CELL_SIZE / 1.8 + "px Arial";
+    configData.ctx.font = CELL_SIZE / 1.8 + "px DM Sans";
     configData.ctx.textAlign = "center";
     //fill text centered vertically and horizontally
     const x = xCell * CELL_SIZE + (CELL_SIZE / 2);
@@ -137,7 +142,7 @@ function DrawWaitingPlayers(waiting_players, min_players, countdown) {
     let countdown_text = `Starting in ${countdown}s`;
 
     configData.ctx.fillStyle = "white";
-    configData.ctx.font = "30px Arial";
+    configData.ctx.font = "30px DM Sans";
     configData.ctx.textAlign = "center";
     //fill text centered vertically and horizontally
     const x = configData.canvas.width / 2;
@@ -152,7 +157,7 @@ function DrawEndGame(winnerName, restartCountdown) {
     let countdown_text = `Restarting in ${restartCountdown}s`;
 
     configData.ctx.fillStyle = "white";
-    configData.ctx.font = "30px Arial";
+    configData.ctx.font = "30px DM Sans";
     configData.ctx.textAlign = "center";
     //fill text centered vertically and horizontally
     const x = configData.canvas.width / 2;
@@ -173,7 +178,7 @@ function DrawShrink(CELL_SIZE, GRID_SIZE, shrink_size) {
 }
 function DrawFreezeTime(freezeTime) {
     configData.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-    configData.ctx.font = "bold 72px Arial";
+    configData.ctx.font = "bold 72px DM Sans";
     configData.ctx.textAlign = "center";
     const x = configData.canvas.width / 2;
     const y = configData.canvas.height / 2;
@@ -184,9 +189,9 @@ function DrawMapShrinkTime(shrinkTime) {
     configData.ctx.textAlign = "center";
     const x = configData.canvas.width / 2;
     const y = configData.canvas.height / 2;
-    configData.ctx.font = "24px Arial";
+    configData.ctx.font = "24px DM Sans";
     configData.ctx.fillText("shrinking in", x, y - 32);
-    configData.ctx.font = "64px Arial";
+    configData.ctx.font = "64px DM Sans";
     configData.ctx.fillText(shrinkTime, x, y + 24);
 }
 function DrawKillShortestTime(killShortestTime) {
@@ -194,9 +199,9 @@ function DrawKillShortestTime(killShortestTime) {
     configData.ctx.textAlign = "center";
     const x = configData.canvas.width / 2;
     const y = configData.canvas.height / 2;
-    configData.ctx.font = "24px Arial";
+    configData.ctx.font = "24px DM Sans";
     configData.ctx.fillText("killing shortest snake in", x, y - 32);
-    configData.ctx.font = "64px Arial";
+    configData.ctx.font = "64px DM Sans";
     configData.ctx.fillText(killShortestTime, x, y + 24);
 }
 // //if mobile - show touch controls

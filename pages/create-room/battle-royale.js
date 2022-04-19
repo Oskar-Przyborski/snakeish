@@ -81,7 +81,7 @@ export default function CreateRoomBattleRoyale(props) {
                     </RangeInput>
                 </div>
                 <div className="rightCol">
-                    Minimum number of players needed to start the game. The game will start 15s after the number of players reaches this number.
+                    Minimum number of players needed to start the game. The game will start 5s after the number of players reaches this number.
                 </div>
                 <div className="leftCol odd">
                     <Flex margin="0.5em">

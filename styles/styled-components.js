@@ -51,12 +51,14 @@ const TextInput = styled.div`
     border-bottom:1px solid #8BE8CB;
     background-color:transparent;
     transition: border-bottom 0.2s, margin-bottom 0.2s;
-  }
-  input:focus { 
-    outline:none;
-    border-bottom-color: #8BE8CB;
-    border-bottom-width: 3px;
-    margin-bottom: -2px;
+    font-family: 'DM Sans', sans-serif;
+    width:13em;
+    &:focus { 
+      outline:none;
+      border-bottom-color: #8BE8CB;
+      border-bottom-width: 3px;
+      margin-bottom: -2px;
+    }
   }
 
   label {
@@ -86,6 +88,7 @@ const Button = styled.button`
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  font-family: 'DM Sans', sans-serif;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
   margin: ${props => props.margin ? props.margin : "0.5em"};
