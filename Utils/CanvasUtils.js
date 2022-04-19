@@ -1,5 +1,10 @@
 const configData = { canvas: null }
 function Config(canvas) {
+    let DmSansFont = new FontFace(
+        "DM Sans",
+        "url(https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap)"
+    );
+    document.fonts.add(DmSansFont)
     configData.canvas = canvas;
     configData.ctx = canvas.getContext("2d");
 }
@@ -32,6 +37,7 @@ function DrawSnakes(CELL_SIZE, players) {
 }
 function DrawPlayerSnake(CELL_SIZE, player) {
     const snake = player.gameData.snake;
+    if (snake.length == 0) return;
     const name = player.gameData.name;
     const color = player.gameData.color;
     for (let i = 0; i < snake.length; i++) {
@@ -76,26 +82,32 @@ function DrawSnakeElement(CELL_SIZE, previousElement, currentElement, nextElemen
             DrawRectShape(currentElementTopLeftPos.x, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.875, CELL_SIZE * 0.75, color);
             break;
         case JSON.stringify({ prev: null, next: { x: 1, y: 0 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 1, y: 0 } }):
         case JSON.stringify({ prev: { x: 1, y: 0 }, next: null }):
+        case JSON.stringify({ prev: { x: 1, y: 0 }, next: { x: 0, y: 0 } }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.875, CELL_SIZE * 0.75, color);
             break;
         case JSON.stringify({ prev: { x: -1, y: 0 }, next: null }):
+        case JSON.stringify({ prev: { x: -1, y: 0 }, next: { x: 0, y: 0 } }):
         case JSON.stringify({ prev: null, next: { x: -1, y: 0 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: -1, y: 0 } }):
             DrawRectShape(currentElementTopLeftPos.x, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.875, CELL_SIZE * 0.75, color);
             break;
         case JSON.stringify({ prev: null, next: { x: 0, y: -1 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 0, y: -1 } }):
         case JSON.stringify({ prev: { x: 0, y: -1 }, next: null }):
+        case JSON.stringify({ prev: { x: 0, y: -1 }, next: { x: 0, y: 0 } }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y, CELL_SIZE * 0.75, CELL_SIZE * 0.875, color);
             break;
         case JSON.stringify({ prev: { x: 0, y: 1 }, next: null }):
+        case JSON.stringify({ prev: { x: 0, y: 1 }, next: { x: 0, y: 0 } }):
         case JSON.stringify({ prev: null, next: { x: 0, y: 1 } }):
+        case JSON.stringify({ prev: { x: 0, y: 0 }, next: { x: 0, y: 1 } }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.75, CELL_SIZE * 0.875, color);
             break;
         case JSON.stringify({ prev: null, next: null }):
             DrawRectShape(currentElementTopLeftPos.x + CELL_SIZE * 0.125, currentElementTopLeftPos.y + CELL_SIZE * 0.125, CELL_SIZE * 0.75, CELL_SIZE * 0.75, color);
             break;
-        default:
-            DrawRectShape(currentElementTopLeftPos.x, currentElementTopLeftPos.y, CELL_SIZE, CELL_SIZE, color);
     }
 }
 function DrawRectShape(x, y, width, height, color) {
@@ -104,7 +116,7 @@ function DrawRectShape(x, y, width, height, color) {
 }
 function DrawText(text, xCell, yCell, CELL_SIZE) {
     configData.ctx.fillStyle = "white";
-    configData.ctx.font = CELL_SIZE / 1.8 + "px Arial";
+    configData.ctx.font = CELL_SIZE / 1.8 + "px DM Sans";
     configData.ctx.textAlign = "center";
     //fill text centered vertically and horizontally
     const x = xCell * CELL_SIZE + (CELL_SIZE / 2);
@@ -117,9 +129,81 @@ function DrawApples(CELL_SIZE, apples) {
     }
 }
 function DrawApple(CELL_SIZE, apple) {
-    DrawRectShape((apple.x * CELL_SIZE) + (CELL_SIZE * 0.125), (apple.y * CELL_SIZE) + (CELL_SIZE * 0.125), CELL_SIZE * 0.75, CELL_SIZE * 0.75, "red");
+    let color = "red"
+    if (apple.value === 3) {
+        color = "gold"
+    }
+    DrawRectShape((apple.x * CELL_SIZE) + (CELL_SIZE * 0.125), (apple.y * CELL_SIZE) + (CELL_SIZE * 0.125), CELL_SIZE * 0.75, CELL_SIZE * 0.75, color);
 }
 
+function DrawWaitingPlayers(waiting_players, min_players, countdown) {
+    let waiting_players_text = "Waiting for players...";
+    let players_count_text = `${waiting_players}/${min_players}`;
+    let countdown_text = `Starting in ${countdown}s`;
+
+    configData.ctx.fillStyle = "white";
+    configData.ctx.font = "30px DM Sans";
+    configData.ctx.textAlign = "center";
+    //fill text centered vertically and horizontally
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.fillText(waiting_players_text, x, y - 50);
+    configData.ctx.fillText(players_count_text, x, y);
+    if (countdown > 0)
+        configData.ctx.fillText(countdown_text, x, y + 50);
+}
+function DrawEndGame(winnerName, restartCountdown) {
+    let winner_text = `${winnerName} won!`;
+    let countdown_text = `Restarting in ${restartCountdown}s`;
+
+    configData.ctx.fillStyle = "white";
+    configData.ctx.font = "30px DM Sans";
+    configData.ctx.textAlign = "center";
+    //fill text centered vertically and horizontally
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.fillText(winner_text, x, y - 50);
+    configData.ctx.fillText(countdown_text, x, y);
+}
+function DrawShrink(CELL_SIZE, GRID_SIZE, shrink_size) {
+    configData.ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+    //top 
+    configData.ctx.fillRect(0, 0, GRID_SIZE * CELL_SIZE, CELL_SIZE * shrink_size);
+    //bottom
+    configData.ctx.fillRect(0, GRID_SIZE * CELL_SIZE - CELL_SIZE * shrink_size, GRID_SIZE * CELL_SIZE, CELL_SIZE * shrink_size);
+    //left
+    configData.ctx.fillRect(0, shrink_size * CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size * 2) * CELL_SIZE);
+    //right
+    configData.ctx.fillRect(GRID_SIZE * CELL_SIZE - CELL_SIZE * shrink_size, shrink_size * CELL_SIZE, CELL_SIZE * shrink_size, (GRID_SIZE - shrink_size * 2) * CELL_SIZE);
+}
+function DrawFreezeTime(freezeTime) {
+    configData.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    configData.ctx.font = "bold 72px DM Sans";
+    configData.ctx.textAlign = "center";
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.fillText(freezeTime, x, y);
+}
+function DrawMapShrinkTime(shrinkTime) {
+    configData.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    configData.ctx.textAlign = "center";
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.font = "24px DM Sans";
+    configData.ctx.fillText("shrinking in", x, y - 32);
+    configData.ctx.font = "64px DM Sans";
+    configData.ctx.fillText(shrinkTime, x, y + 24);
+}
+function DrawKillShortestTime(killShortestTime) {
+    configData.ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    configData.ctx.textAlign = "center";
+    const x = configData.canvas.width / 2;
+    const y = configData.canvas.height / 2;
+    configData.ctx.font = "24px DM Sans";
+    configData.ctx.fillText("killing shortest snake in", x, y - 32);
+    configData.ctx.font = "64px DM Sans";
+    configData.ctx.fillText(killShortestTime, x, y + 24);
+}
 // //if mobile - show touch controls
 // function isMobile() {
 //     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -142,4 +226,10 @@ export default {
     ClearCanvas,
     DrawSnakes,
     DrawApples,
+    DrawWaitingPlayers,
+    DrawEndGame,
+    DrawShrink,
+    DrawFreezeTime,
+    DrawMapShrinkTime,
+    DrawKillShortestTime
 }

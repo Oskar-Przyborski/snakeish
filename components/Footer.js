@@ -1,8 +1,17 @@
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FooterStyled } from '../styles/FooterStyles.js';
+import styledComponents from 'styled-components';
 import { Flex } from '../styles/styled-components.js';
 import Link from 'next/link';
+
+const FooterStyled = styledComponents.footer`
+    .github-icon{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+`
+
 export default function Footer() {
     return (
         <FooterStyled>
