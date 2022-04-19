@@ -41,7 +41,9 @@ export default function CreateRoomBattleRoyale(props) {
     })
     return (<>
         <Head>
-            <title>Create Room - Snakeish</title>
+            <title>Snakeish - Create Battle-Royale Room</title>
+            <meta name="title" content="Snakeish - Create Battle-Royale Room" />
+            <meta name="description" content="Create Room with battle-royale game mode in Snakeish - online multiplayer snake game"></meta>
         </Head>
         <Flex justifyContent="center" margin="0 102px 0 0">
             <div style={{ marginRight: "auto" }}>

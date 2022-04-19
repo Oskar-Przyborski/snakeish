@@ -88,7 +88,9 @@ export default function CreateRoomClassic(props) {
     })
     return (<>
         <Head>
-            <title>Create Room - Snakeish</title>
+            <title>Snakeish - Create Classic Room</title>
+            <meta name="title" content="Snakeish - Create Classic Room" />
+            <meta name="description" content="Create Room with classic game mode in Snakeish - online multiplayer snake game"></meta>
         </Head>
         <Flex justifyContent="center" margin="0 102px 0 0">
             <div style={{ marginRight: "auto" }}>
