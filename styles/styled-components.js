@@ -171,12 +171,6 @@ const ColorInput = styled.div`
     border:3px solid #8BE8CB;
   }
 `
-const RedBg = styled.div`
-  background-color: #d62246;
-  border-radius: 1em;
-  padding: 1em;
-  margin: 1em;
-`
 
 const SwitchInput = styled.label`
   position: relative;
