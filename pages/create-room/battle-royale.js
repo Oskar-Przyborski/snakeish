@@ -124,7 +124,7 @@ export default function CreateRoomBattleRoyale(props) {
                     </RangeInput>
                 </div>
                 <div className="rightCol odd">
-                    How long is the grid per player. For example if it's set to 8 and 3 players is playing, the grid will be 24x24.
+                    How long is the grid per player. For example if it&apos;s set to 8 and 3 players is playing, the grid will be 24x24.
                 </div>
                 <div className="leftCol">
                     <Button onClick={createRoomHandle} bold>Create &#128640;</Button>
