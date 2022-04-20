@@ -10,8 +10,9 @@ import { Title, TextInput, Button, Flex, RangeInput, SwitchInput, CreateRoomGrid
 
 export default function CreateRoomBattleRoyale(props) {
     const router = useRouter();
-    const [minPlayers, setMinPlayers] = useState(2);
+    const [minPlayers, setMinPlayers] = useState(3);
     const [gameSpeedUpValue, setGameSpeedUpValue] = useState(0.1);
+    const [gridSizePerPlayer, setGridSizePerPlayer] = useState(8);
     const createRoomHandle = async () => {
         const room_ID = document.getElementById("room-id-input").value;
         const dead_zone_kills = document.getElementById("dead-zone-kills-input").checked;
@@ -22,7 +23,8 @@ export default function CreateRoomBattleRoyale(props) {
             settings: {
                 min_players: minPlayers,
                 dead_zone_kills,
-                game_speed_up_value: gameSpeedUpValue
+                game_speed_up_value: gameSpeedUpValue,
+                grid_size_per_player: gridSizePerPlayer
             }
         }
         const resp = await fetch(props.backendURL + "/api/create-room", {
@@ -111,6 +113,18 @@ export default function CreateRoomBattleRoyale(props) {
                 </div>
                 <div className="rightCol">
                     Determines how much the game will speed up on every map shrink. 0 means no speed up.
+                </div>
+                <div className="leftCol odd">
+                    <RangeInput>
+                        Grid size per player
+                        <Flex>
+                            <div style={{ margin: "0.2em 1em", width: "45px" }}>{gridSizePerPlayer}</div>
+                            <input type="range" min="6" max="12" step={1} defaultValue="8" onChange={(e) => setGridSizePerPlayer(e.target.value)} />
+                        </Flex>
+                    </RangeInput>
+                </div>
+                <div className="rightCol odd">
+                    How long is the grid per player. For example if it's set to 8 and 3 players is playing, the grid will be 24x24.
                 </div>
                 <div className="leftCol">
                     <Button onClick={createRoomHandle} bold>Create &#128640;</Button>
