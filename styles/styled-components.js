@@ -19,12 +19,17 @@ export const device = {
   desktopL: `(min-width: ${size.desktop})`
 };
 export const snakeColors = [
-  "#5cd67f",
-  "#add65c",
-  "#d68b5c",
-  "#5ccad6",
-  "#5e5cd6",
-  "#d65cc4"
+  "#F75C03",
+  "#D90368",
+  "#820263",
+  "#04A777",
+  "#00B295",
+  "#03F7EB",
+  "#FCAA67",
+  "#FFFFC7",
+  "#6A5D7B",
+  "#054A91",
+  "#81A4CD"
 ]
 const Title = styled.h1`
   ${props => props.center && `text-align: center;`}

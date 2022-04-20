@@ -111,7 +111,7 @@ export default function Room({ room_id, backendURL }) {
         setPlayerInGame(false);
     }
     const changeColor = (shift) => {
-        const COLORS_COUNT = 6;
+        const COLORS_COUNT = 11;
         let newColor = (selectedPlayerColor + shift) % COLORS_COUNT;
         if (newColor < 0) newColor = COLORS_COUNT - 1;
         setSelectedPlayerColor(newColor);
