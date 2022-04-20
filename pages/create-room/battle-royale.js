@@ -4,22 +4,25 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import { useState, forwardRef } from "react";
-import { Container, Row, Col } from "styled-bootstrap-grid"
+import { Container } from "styled-bootstrap-grid"
 import { Title, TextInput, Button, Flex, RangeInput, SwitchInput, CreateRoomGrid } from "../../styles/styled-components"
 
 
 export default function CreateRoomBattleRoyale(props) {
     const router = useRouter();
     const [minPlayers, setMinPlayers] = useState(2);
+    const [gameSpeedUpValue, setGameSpeedUpValue] = useState(0.1);
     const createRoomHandle = async () => {
         const room_ID = document.getElementById("room-id-input").value;
         const dead_zone_kills = document.getElementById("dead-zone-kills-input").checked;
+        console.log(gameSpeedUpValue)
         const data = {
             room_ID,
             gameModeIndex: 1,
             settings: {
                 min_players: minPlayers,
-                dead_zone_kills
+                dead_zone_kills,
+                game_speed_up_value: gameSpeedUpValue
             }
         }
         const resp = await fetch(props.backendURL + "/api/create-room", {
@@ -77,8 +80,8 @@ export default function CreateRoomBattleRoyale(props) {
                     <RangeInput>
                         Minimum players
                         <Flex>
-                            <div style={{ margin: "0.2em 1em" }}>{minPlayers}</div>
-                            <input type="range" min="2" max="16" defaultValue="2" onChange={(e) => setMinPlayers(e.target.value)} />
+                            <div style={{ margin: "0.2em 1em", width: "45px" }}>{minPlayers}</div>
+                            <input type="range" min="2" max="16" defaultValue="3" onChange={(e) => setMinPlayers(e.target.value)} />
                         </Flex>
                     </RangeInput>
                 </div>
@@ -96,6 +99,18 @@ export default function CreateRoomBattleRoyale(props) {
                 </div >
                 <div className="rightCol odd">
                     If checked, dead zone kills instantly, instead of slowly shrotening the snake.
+                </div>
+                <div className="leftCol">
+                    <RangeInput>
+                        Game speed-up value
+                        <Flex>
+                            <div style={{ margin: "0.2em 1em", width: "45px" }}>{gameSpeedUpValue}</div>
+                            <input type="range" min="0" max="0.3" step={0.05} defaultValue="0.1" onChange={(e) => setGameSpeedUpValue(e.target.value)} />
+                        </Flex>
+                    </RangeInput>
+                </div>
+                <div className="rightCol">
+                    Determines how much the game will speed up on every map shrink. 0 means no speed up.
                 </div>
                 <div className="leftCol">
                     <Button onClick={createRoomHandle} bold>Create &#128640;</Button>
