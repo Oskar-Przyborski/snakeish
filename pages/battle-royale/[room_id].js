@@ -23,6 +23,9 @@ export default function Room({ room_id, backendURL }) {
 
     useDisconnectSocketOnLeave(socket);
     useEffect(() => {
+        const cookiePlayerColor = getCookie("player_colorIDX");
+        if (cookiePlayerColor)
+            setSelectedPlayerColor(cookiePlayerColor);
         setSocket(io(backendURL + "/rooms"));
     }, [])
     useEffect(() => {
@@ -97,6 +100,9 @@ export default function Room({ room_id, backendURL }) {
         if (name.length > 10) return alert("Name is too long");
         if (name.length < 1) return alert("Name is empty");
         setCookies("player_name", name, {
+            maxAge: 604800,
+        });
+        setCookies("player_colorIDX", selectedPlayerColor, {
             maxAge: 604800,
         });
         socket.emit("join-game", name, selectedPlayerColor, (error, message) => {
