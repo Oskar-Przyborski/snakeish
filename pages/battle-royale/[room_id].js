@@ -12,6 +12,7 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import Link from 'next/link'
 import Head from "next/head";
 import PlayersList from "../../components/PlayersList";
+import BattleRoyaleLeaderboard from "../../components/BattleRoyaleLeaderboard";
 
 export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
@@ -141,7 +142,7 @@ export default function Room({ room_id, backendURL }) {
                     {playerInGame ?
                         <>
                             <div style={{ marginBottom: "auto" }}>
-                                {isGameStarted ? <Leaderboard players={players} socketID={socket.id} maxPlayers={5} /> : <PlayersList players={players} socketID={socket.id} maxPlayers={5} />}
+                                {isGameStarted ? <BattleRoyaleLeaderboard players={players} socketID={socket.id} maxPlayers={5} /> : <PlayersList players={players} socketID={socket.id} maxPlayers={5} />}
                             </div>
                             <div style={{ marginTop: "auto" }}>
                                 <Button bold margin="1.4em" onClick={leaveGame}>Leave game</Button>
