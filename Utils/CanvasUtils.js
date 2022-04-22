@@ -204,20 +204,6 @@ function DrawKillShortestTime(killShortestTime) {
     configData.ctx.font = "64px DM Sans";
     configData.ctx.fillText(killShortestTime, x, y + 24);
 }
-// //if mobile - show touch controls
-// function isMobile() {
-//     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-// }
-// if (isMobile()) {
-//     document.getElementById("move-up").style.display = "block";
-//     document.getElementById("move-up").addEventListener("click", () => { direction != "down" && SendTargetDirection("up") });
-//     document.getElementById("move-down").style.display = "block";
-//     document.getElementById("move-down").addEventListener("click", () => { direction != "up" && SendTargetDirection("down") });
-//     document.getElementById("move-left").style.display = "block";
-//     document.getElementById("move-left").addEventListener("click", () => { direction != "right" && SendTargetDirection("left") });
-//     document.getElementById("move-right").style.display = "block";
-//     document.getElementById("move-right").addEventListener("click", () => { direction != "left" && SendTargetDirection("right") });
-// }
 
 
 export default {

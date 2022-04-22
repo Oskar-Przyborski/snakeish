@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { io } from 'socket.io-client'
 import { useDisconnectSocketOnLeave } from "../../components/disconnectSocketOnLeave";
-import styles from "../../styles/arrows.module.css"
 import { getCookie, setCookies } from "cookies-next";
 import { Title, Button, Flex, TextInput, ColorInput } from "../../styles/styled-components";
 import { Container, Row, Col } from "styled-bootstrap-grid";
@@ -9,6 +8,7 @@ import Leaderboard from "../../components/Leaderboard.js";
 import CanvasUtils from "../../Utils/CanvasUtils.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import MobileInput from "../../components/MoblieInput.js";
 import Link from 'next/link'
 import Head from "next/head";
 
@@ -17,10 +17,11 @@ export default function Room({ room_id, backendURL }) {
     const [players, setPlayers] = useState([]);
     const [selectedPlayerColor, setSelectedPlayerColor] = useState(0);
     const [socket, setSocket] = useState(null);
-
+    const [showMobileInput, setShowMobileInput] = useState(false);
     useDisconnectSocketOnLeave(socket);
     useEffect(() => {
         setSocket(io(backendURL + "/rooms"));
+        window.onresize();
     }, [])
     useEffect(() => {
         if (!socket) return;
@@ -28,6 +29,7 @@ export default function Room({ room_id, backendURL }) {
 
         let canvas = document.getElementById("canvas");
         CanvasUtils.Config(canvas);
+        window.onresize = () => { };
         window.onresize = () => {
             let canvasCol = document.getElementById("canvasCol");
             if (!canvasCol) return;
@@ -78,10 +80,16 @@ export default function Room({ room_id, backendURL }) {
                 alert(message);
             }
         })
+
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+            setShowMobileInput(true);
+        }
+        
     }
     const leaveGame = () => {
         socket.emit("leave-game");
         setPlayerInGame(false);
+        setShowMobileInput(false);
     }
     const changeColor = (shift) => {
         const COLORS_COUNT = 11;
@@ -107,7 +115,7 @@ export default function Room({ room_id, backendURL }) {
             <Row style={{ borderRadius: "1em", overflow: "hidden" }}>
                 <Col lg={8} style={{ backgroundColor: "#4A525A", padding: "1em" }} id="canvasCol">
                     <Flex justifyContent="center" alignCenter style={{ margin: "0.5em" }}>
-                        <canvas id="canvas" width={600} height={600} style={{imageRendering:"crisp-edges"}}/>
+                        <canvas id="canvas" width={600} height={600} style={{ imageRendering: "crisp-edges" }} />
                     </Flex>
                 </Col>
                 <Col lg={4} style={{ backgroundColor: "#D62246", padding: "0em 0.5em", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
@@ -137,13 +145,8 @@ export default function Room({ room_id, backendURL }) {
                     }
                 </Col>
             </Row>
+            {showMobileInput && <MobileInput ChangeDirectionCallback={(dir) => socket.emit('update-target-direction', dir)} />}
         </Container>
-        <div id="touch-controls">
-            <button id="move-up" className={styles.moveUp + " " + styles.arrow} style={{ display: "none" }}>Up</button>
-            <button id="move-down" className={styles.moveDown + " " + styles.arrow} style={{ display: "none" }}>Down</button>
-            <button id="move-left" className={styles.moveLeft + " " + styles.arrow} style={{ display: "none" }}>Left</button>
-            <button id="move-right" className={styles.moveRight + " " + styles.arrow} style={{ display: "none" }}>Right</button>
-        </div>
     </>)
 }
 
