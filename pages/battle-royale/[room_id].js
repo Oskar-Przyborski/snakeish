@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { io } from 'socket.io-client'
 import { useDisconnectSocketOnLeave } from "../../components/disconnectSocketOnLeave";
-import styles from "../../styles/arrows.module.css"
 import { getCookie, setCookies } from "cookies-next";
 import { Title, Button, Flex, TextInput, ColorInput } from "../../styles/styled-components";
 import { Container, Row, Col } from "styled-bootstrap-grid";
-import Leaderboard from "../../components/Leaderboard.js";
 import CanvasUtils from "../../Utils/CanvasUtils.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -13,13 +11,14 @@ import Link from 'next/link'
 import Head from "next/head";
 import PlayersList from "../../components/PlayersList";
 import BattleRoyaleLeaderboard from "../../components/BattleRoyaleLeaderboard";
-
+import MobileInput from "../../components/MoblieInput";
 export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [players, setPlayers] = useState([]);
     const [selectedPlayerColor, setSelectedPlayerColor] = useState(0);
     const [socket, setSocket] = useState(null);
+    const [showMobileInput, setShowMobileInput] = useState(false);
 
     useDisconnectSocketOnLeave(socket);
     useEffect(() => {
@@ -88,6 +87,7 @@ export default function Room({ room_id, backendURL }) {
         function SendTargetDirection(targetDirection) {
             socket.emit('update-target-direction', targetDirection);
         }
+        window.onresize()
         return () => {
             socket.disconnect();
             document.removeEventListener("keydown", handleKeyDown);
@@ -112,10 +112,14 @@ export default function Room({ room_id, backendURL }) {
                 alert(message);
             }
         })
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            setShowMobileInput(true);
+        }
     }
     const leaveGame = () => {
         socket.emit("leave-game");
         setPlayerInGame(false);
+        setShowMobileInput(false);
     }
     const changeColor = (shift) => {
         const COLORS_COUNT = 11;
@@ -171,13 +175,8 @@ export default function Room({ room_id, backendURL }) {
                     }
                 </Col>
             </Row>
+            {showMobileInput && <MobileInput ChangeDirectionCallback={(dir) => socket.emit('update-target-direction', dir)} />}
         </Container>
-        <div id="touch-controls">
-            <button id="move-up" className={styles.moveUp + " " + styles.arrow} style={{ display: "none" }}>Up</button>
-            <button id="move-down" className={styles.moveDown + " " + styles.arrow} style={{ display: "none" }}>Down</button>
-            <button id="move-left" className={styles.moveLeft + " " + styles.arrow} style={{ display: "none" }}>Left</button>
-            <button id="move-right" className={styles.moveRight + " " + styles.arrow} style={{ display: "none" }}>Right</button>
-        </div>
     </>)
 }
 
