@@ -262,6 +262,59 @@ const CreateRoomGrid = styled.div`
         color:black;
     }
 `
+
+const MobileInputContainer = styled.div`
+  position:fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #00000055;
+  padding: 10px;
+  height: ${props => props.expanded ? "250" : "0"}px;
+  button{
+    margin:0.5em;
+    width:100px;
+    font-size:1.2em;
+    width:75px;
+    height:75px;
+    position: absolute;
+    background-color: #8BE8CB;
+    border-radius:1em;
+    outline:none;
+    border:none;
+  }
+  #up{
+    top: 10px;
+    right:50%;
+    transform: translateX(50%);
+  }
+  #down{
+    bottom: 10px;
+    right:50%;
+    transform: translateX(50%);
+  }
+  #left{
+    top:50%;
+    left: 10px;
+    transform: translateY(-50%);
+  }
+  #right{
+    top:50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+  #expand{
+    color:white;
+    background-color:#00000055;
+    top:-49px;
+    left:0px;
+    width:50px;
+    height:40px;
+    border-radius:0;
+    border-top-left-radius:1em;
+    border-top-right-radius:1em;
+  }
+`
 export {
   Title,
   TextInput,
@@ -272,5 +325,6 @@ export {
   Outline,
   SwitchInput,
   RedBg,
-  CreateRoomGrid
+  CreateRoomGrid,
+  MobileInputContainer
 }
