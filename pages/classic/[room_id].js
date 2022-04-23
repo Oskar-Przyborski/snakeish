@@ -21,7 +21,6 @@ export default function Room({ room_id, backendURL }) {
     useDisconnectSocketOnLeave(socket);
     useEffect(() => {
         setSocket(io(backendURL + "/rooms"));
-        window.onresize();
     }, [])
     useEffect(() => {
         if (!socket) return;
@@ -59,6 +58,7 @@ export default function Room({ room_id, backendURL }) {
         function SendTargetDirection(targetDirection) {
             socket.emit('update-target-direction', targetDirection);
         }
+        window.onresize()
         return () => {
             socket.disconnect();
             document.removeEventListener("keydown", handleKeyDown);
