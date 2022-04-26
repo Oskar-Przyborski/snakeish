@@ -12,6 +12,7 @@ import Head from "next/head";
 import PlayersList from "../../components/PlayersList";
 import BattleRoyaleLeaderboard from "../../components/BattleRoyaleLeaderboard";
 import MobileInput from "../../components/MoblieInput";
+import InviteFriends from "../../components/InviteFriends";
 export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
     const [isGameStarted, setIsGameStarted] = useState(false);
@@ -170,6 +171,7 @@ export default function Room({ room_id, backendURL }) {
                                     <FontAwesomeIcon icon={faChevronRight} onClick={() => changeColor(1)} />
                                 </ColorInput>
                                 <Button onClick={joinGame}>Join game</Button>
+                                <InviteFriends />
                             </Flex>
                         </>
                     }

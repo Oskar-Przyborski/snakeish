@@ -11,6 +11,7 @@ import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons
 import MobileInput from "../../components/MoblieInput.js";
 import Link from 'next/link'
 import Head from "next/head";
+import InviteFriends from "../../components/InviteFriends";
 
 export default function Room({ room_id, backendURL }) {
     const [playerInGame, setPlayerInGame] = useState(false);
@@ -140,6 +141,7 @@ export default function Room({ room_id, backendURL }) {
                                     <FontAwesomeIcon icon={faChevronRight} onClick={() => changeColor(1)} />
                                 </ColorInput>
                                 <Button onClick={joinGame}>Join game</Button>
+                                <InviteFriends/>
                             </Flex>
                         </>
                     }

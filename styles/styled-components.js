@@ -110,8 +110,8 @@ const Button = styled.button`
 const Outline = styled.div`
   border: 3px solid #a0ecd0;
   border-radius:.6em;
-  padding: 3em;
-  margin: 1em;
+  padding: ${props => props.padding ? props.padding : "1em"};
+  margin: ${props => props.margin ? props.margin : "1em"};
 `
 const Flex = styled.div`
   display:flex;
